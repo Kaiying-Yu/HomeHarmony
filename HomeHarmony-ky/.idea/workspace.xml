@@ -4,23 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="222c5ebd-6f6a-4e07-94ab-b38028f8372a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HH-Backend-SpringBoot/src/main/java/hh/homeharmony/controller/ChoreController.java" beforeDir="false" afterPath="$PROJECT_DIR$/HH-Backend-SpringBoot/src/main/java/hh/homeharmony/controller/ChoreController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HH-Backend-SpringBoot/src/main/java/hh/homeharmony/mapper/ChoreMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/HH-Backend-SpringBoot/src/main/java/hh/homeharmony/mapper/ChoreMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HH-Backend-SpringBoot/src/main/java/hh/homeharmony/pojo/Chore.java" beforeDir="false" afterPath="$PROJECT_DIR$/HH-Backend-SpringBoot/src/main/java/hh/homeharmony/model/Chore.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HH-Backend-SpringBoot/src/main/java/hh/homeharmony/pojo/Result.java" beforeDir="false" afterPath="$PROJECT_DIR$/HH-Backend-SpringBoot/src/main/java/hh/homeharmony/model/Result.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HH-Backend-SpringBoot/src/main/java/hh/homeharmony/service/ChoreService.java" beforeDir="false" afterPath="$PROJECT_DIR$/HH-Backend-SpringBoot/src/main/java/hh/homeharmony/service/ChoreService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HH-Backend-SpringBoot/src/main/java/hh/homeharmony/service/impl/ChoreServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/HH-Backend-SpringBoot/src/main/java/hh/homeharmony/service/impl/ChoreServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HH-Backend-SpringBoot/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/HH-Backend-SpringBoot/src/main/resources/application.properties" afterDir="false" />
-    </list>
+    <list default="true" id="222c5ebd-6f6a-4e07-94ab-b38028f8372a" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -28,12 +19,12 @@
     &quot;assignee&quot;: &quot;mahamayashen&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/brandy-wang/HomeHarmony&quot;,
-    &quot;accountId&quot;: &quot;d2d62035-5d40-4ba7-b82a-1fe1a2d7d438&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Kaiying-Yu/HomeHarmony.git",
+    "accountId": "fc417c12-d255-4e39-802f-37862a089233"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 0
@@ -44,29 +35,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;qs&quot;,
-    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/qinyuan/cs/CS5004/HomeHarmony&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "git-widget-placeholder": "ky",
+    "go.import.settings.migrated": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Kaiying/Desktop/HomeHarmony-ky/HomeHarmony-ky",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mysql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
     ]
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="HomeHarmony" />
@@ -85,17 +77,6 @@
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
       <framework value="gotest" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="HomeHarmony" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="HomeHarmony" />
-      <option name="filePath" />
       <method v="2" />
     </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
@@ -148,12 +129,23 @@
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <method v="2" />
     </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="HomeHarmony" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="HomeHarmony" />
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.21565.193" />
-        <option value="bundled-js-predefined-d6986cc7102b-e768b9ed790e-JavaScript-IU-243.21565.193" />
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23726.103" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23726.103" />
       </set>
     </attachedChunks>
   </component>
@@ -169,6 +161,7 @@
       <workItem from="1732604885415" duration="92000" />
       <workItem from="1732605428080" duration="18000" />
       <workItem from="1732607162857" duration="9444000" />
+      <workItem from="1733691282962" duration="122000" />
     </task>
     <servers />
   </component>
