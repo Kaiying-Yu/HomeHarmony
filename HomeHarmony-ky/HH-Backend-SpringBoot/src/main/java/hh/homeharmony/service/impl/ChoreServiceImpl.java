@@ -1,18 +1,17 @@
 package hh.homeharmony.service.impl;
 
-import hh.homeharmony.model.ChoreStatus;
+import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import hh.homeharmony.model.Chore;
-import hh.homeharmony.service.ChoreService;
 import hh.homeharmony.mapper.ChoreMapper;
-
-import java.time.LocalDateTime;
-import java.util.List;
-
 import hh.homeharmony.mapper.UserMapper;
+import hh.homeharmony.model.Chore;
+import hh.homeharmony.model.ChoreStatus;
+import hh.homeharmony.model.User;
+import hh.homeharmony.service.ChoreService;
 
 @Service
 public class ChoreServiceImpl implements ChoreService {
@@ -52,30 +51,20 @@ public class ChoreServiceImpl implements ChoreService {
         choreMapper.deleteById(id);
     }
 
-//    @Override
-//    public void assignUserToChore(Chore chore, String strategyType, String userId) {
-//        IAssignmentStrategy strategy;
-//        switch (strategyType.toLowerCase()) {
-//            case "lowestpoints":
-//                strategy = lowestPointsStrategy;
-//                break;
-//            case "random":
-//                strategy = randomAssignStrategy;
-//                break;
-//            case "manual":
-//                User user = userMapper.selectById(Integer.parseInt(userId));
-//                if (user == null) {
-//                    throw new IllegalArgumentException("User not found");
-//                }
-//                manualAssignStrategy.setUser(user);
-//                strategy = manualAssignStrategy;
-//                break;
-//            default:
-//                throw new IllegalArgumentException("Invalid strategy type");
-//        }
-//
-//        User assignedUser = strategy.assignUser(chore);
-//        chore.assignUser(assignedUser);
-//        choreMapper.update(chore);
-//    }
+    @Override
+    public void assignUserToChore(Integer choreId, Integer userId) {
+        Chore chore = choreMapper.selectById(choreId);
+        if (chore == null) {
+            throw new IllegalArgumentException("Chore not found");
+        }
+
+        User user = userMapper.findUserById(userId);
+        if (user == null) {
+            throw new IllegalArgumentException("User not found");
+        }
+
+        chore.setAssignedUser(user);
+        chore.setStatus(ChoreStatus.IN_PROGRESS);
+        choreMapper.update(chore);
+    }
 }

@@ -64,6 +64,24 @@ public class ChoreController {
         choreService.deleteChore(id);
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping("/{choreId}/assign/{userId}")
+    public ResponseEntity<Map<String, Object>> assignUserToChore(
+            @PathVariable Integer choreId,
+            @PathVariable Integer userId) {
+        try {
+            choreService.assignUserToChore(choreId, userId);
+            Map<String, Object> response = new HashMap<>();
+            response.put("status", "success");
+            response.put("message", "User assigned successfully");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("status", "error");
+            errorResponse.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
+    }
 }
 
 // Chore Request DTO

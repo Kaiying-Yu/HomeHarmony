@@ -23,7 +23,7 @@
             <!-- Cards Grid -->
             <el-row :gutter="20" class="card-grid">
                 <!-- Functional Spaces Card -->
-                <el-col :span="8">
+                <el-col :span="12">
                     <el-card class="box-card">
                         <template #header>
                             <div class="card-header">
@@ -40,7 +40,7 @@
                 </el-col>
 
                 <!-- Team Members Card -->
-                <el-col :span="8">
+                <el-col :span="12">
                     <el-card class="box-card">
                         <template #header>
                             <div class="card-header">
@@ -52,25 +52,6 @@
                              class="user-item">
                             <span>{{ user.username }}</span>
                             <el-tag size="small" type="success">Active</el-tag>
-                        </div>
-                    </el-card>
-                </el-col>
-
-                <!-- Chores Card -->
-                <el-col :span="8">
-                    <el-card class="box-card">
-                        <template #header>
-                            <div class="card-header">
-                                <span><i class="el-icon-tickets"></i> Active Chores</span>
-                            </div>
-                        </template>
-                        <div v-for="chore in spaceChores" 
-                             :key="chore.id" 
-                             class="chore-item">
-                            <span>{{ chore.name }}</span>
-                            <el-tag size="small" :type="getChoreStatusType(chore.status)">
-                                {{ chore.status }}
-                            </el-tag>
                         </div>
                     </el-card>
                 </el-col>
@@ -133,7 +114,6 @@ export default {
     data() {
         return {
             currentSpace: null,
-            spaceChores: [],
             dialogVisible: false,
             newSpace: {
                 name: '',
@@ -197,44 +177,18 @@ export default {
         fetchCurrentSpace() {
             const spaceId = localStorage.getItem('spaceId');
             if (!spaceId) {
-                return; // User hasn't joined any space yet
+                return;
             }
             
             axios.get(`http://localhost:8080/space/${spaceId}`)
                 .then(response => {
                     this.currentSpace = response.data;
-                    if (this.currentSpace) {
-                        this.fetchSpaceChores();
-                    }
                 })
                 .catch(error => {
                     console.error('Error fetching space:', error);
                     this.$message.error('Failed to fetch space details');
-                    localStorage.removeItem('spaceId'); // Clear invalid spaceId
+                    localStorage.removeItem('spaceId');
                 });
-        },
-        fetchSpaceChores() {
-            if (this.currentSpace && this.currentSpace.choreIds) {
-                axios.get(`http://localhost:8080/chores/space/${this.currentSpace.id}`)
-                    .then(response => {
-                        if (response.data.status === 'success') {
-                            this.spaceChores = response.data.data;
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error fetching chores:', error);
-                        this.$message.error('Failed to fetch chores');
-                    });
-            }
-        },
-        getChoreStatusType(status) {
-            if (status === 'Pending') {
-                return 'warning';
-            } else if (status === 'In Progress') {
-                return 'primary';
-            } else if (status === 'Completed') {
-                return 'success';
-            }
         },
         showJoinSpace() {
             this.joinDialogVisible = true;
@@ -278,7 +232,6 @@ export default {
                             this.$message.success(response.data.message);
                             localStorage.removeItem('spaceId');
                             this.currentSpace = null;
-                            this.spaceChores = [];
                         } else {
                             this.$message.error(response.data.message);
                         }
@@ -410,7 +363,7 @@ export default {
     align-items: center;
 }
 
-.functional-space-item, .user-item, .chore-item {
+.functional-space-item, .user-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -419,8 +372,7 @@ export default {
 }
 
 .functional-space-item:last-child, 
-.user-item:last-child, 
-.chore-item:last-child {
+.user-item:last-child {
     border-bottom: none;
 }
 

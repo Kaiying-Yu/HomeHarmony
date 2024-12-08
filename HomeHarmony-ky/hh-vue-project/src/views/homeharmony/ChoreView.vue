@@ -18,6 +18,42 @@
                         </el-tag>
                     </template>
                 </el-table-column>
+                <el-table-column label="Assigned To" width="180">
+                    <template #default="scope">
+                        <div v-if="scope.row.assignedUser">
+                            {{ scope.row.assignedUser.username }}
+                            <el-button type="text" size="mini" @click="scope.row.showSelect = true" v-if="!scope.row.showSelect">
+                                Change
+                            </el-button>
+                        </div>
+                        <el-select
+                            v-if="!scope.row.assignedUser || scope.row.showSelect"
+                            v-model="scope.row.assignedUserId"
+                            placeholder="Assign user"
+                            @change="(value) => {
+                                assignUser(scope.row.id, value);
+                                scope.row.showSelect = false;
+                            }">
+                            <el-option
+                                v-for="user in spaceUsers"
+                                :key="user.id"
+                                :label="user.username"
+                                :value="user.id">
+                            </el-option>
+                        </el-select>
+                    </template>
+                </el-table-column>
+                <el-table-column label="Complete" width="120">
+                    <template slot-scope="scope">
+                        <el-button 
+                            :type="scope.row.choreStatus === 'COMPLETED' ? 'success' : 'primary'"
+                            size="mini"
+                            :disabled="scope.row.choreStatus === 'COMPLETED'"
+                            @click="markAsCompleted(scope.row)">
+                            {{ scope.row.choreStatus === 'COMPLETED' ? 'Completed' : 'Mark Complete' }}
+                        </el-button>
+                    </template>
+                </el-table-column>
                 <el-table-column label="Options">
                     <template slot-scope="scope">
                         <el-button type="primary" size="mini" @click="editChore(scope.row)">Edit</el-button>
@@ -72,7 +108,8 @@ export default {
                 points: 0,
                 dueDate: '',
                 choreStatus: 'PENDING'
-            }
+            },
+            spaceUsers: [],
         }
     },
     methods: {
@@ -96,41 +133,33 @@ export default {
                 type: 'warning'
             }).then(() => {
                 axios.delete(`http://localhost:8080/chores/${id}`)
-                    .then(response => {
-                        if (response.data.status === 'success') {
-                            this.$message.success('Chore deleted successfully');
-                            this.fetchChores();
-                        } else {
-                            this.$message.error('Failed to delete chore');
-                        }
+                    .then(() => {
+                        this.$message.success('Chore deleted successfully')
+                        this.fetchChores()
                     })
                     .catch(error => {
-                        console.error('Error deleting chore:', error);
-                        this.$message.error('Failed to delete chore');
-                    });
-            });
+                        console.error('Error deleting chore:', error)
+                        this.$message.error('Failed to delete chore')
+                    })
+            })
         },
         submitChore() {
             const url = this.isEdit 
                 ? `http://localhost:8080/chores/${this.choreForm.id}`
-                : 'http://localhost:8080/chores';
-            const method = this.isEdit ? 'put' : 'post';
+                : 'http://localhost:8080/chores'
+            const method = this.isEdit ? 'put' : 'post'
 
             axios[method](url, this.choreForm)
-                .then(response => {
-                    if (response.data.status === 'success') {
-                        this.$message.success(this.isEdit ? 'Chore updated successfully' : 'Chore created successfully');
-                        this.dialogVisible = false;
-                        this.resetForm();
-                        this.fetchChores();
-                    } else {
-                        this.$message.error('Failed to save chore');
-                    }
+                .then(() => {
+                    this.$message.success(this.isEdit ? 'Chore updated successfully' : 'Chore created successfully')
+                    this.dialogVisible = false
+                    this.resetForm()
+                    this.fetchChores()
                 })
                 .catch(error => {
-                    console.error('Error saving chore:', error);
-                    this.$message.error('Failed to save chore');
-                });
+                    console.error('Error saving chore:', error)
+                    this.$message.error('Failed to save chore')
+                })
         },
         resetForm() {
             this.isEdit = false
@@ -145,20 +174,81 @@ export default {
         fetchChores() {
             axios.get('http://localhost:8080/chores')
                 .then(response => {
-                    if (response.data.status === 'success') {
+                    if (response.data && response.data.status === 'success') {
                         this.tableData = response.data.data;
                     } else {
-                        this.$message.error('Failed to fetch chores');
+                        this.$message.error('Failed to fetch chores: Invalid response format');
                     }
                 })
                 .catch(error => {
                     console.error('Error fetching chores:', error);
                     this.$message.error('Failed to fetch chores');
                 });
+        },
+        fetchSpaceUsers() {
+            const spaceId = localStorage.getItem('spaceId');
+            if (!spaceId) return;
+            
+            axios.get(`http://localhost:8080/space/${spaceId}`)
+                .then(response => {
+                    if (response.data && response.data.users) {
+                        this.spaceUsers = response.data.users;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching space users:', error);
+                    this.$message.error('Failed to fetch space users');
+                });
+        },
+        assignUser(choreId, userId) {
+            axios.put(`http://localhost:8080/chores/${choreId}/assign/${userId}`)
+                .then(response => {
+                    if (response.data.status === 'success') {
+                        const assignedUser = this.spaceUsers.find(user => user.id === userId);
+                        const chore = this.tableData.find(c => c.id === choreId);
+                        if (chore) {
+                            chore.assignedUser = assignedUser;
+                            chore.choreStatus = 'IN_PROGRESS';
+                        }
+                        this.$message.success('User assigned successfully');
+                    } else {
+                        this.$message.error('Failed to assign user');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error assigning user:', error);
+                    this.$message.error('Failed to assign user');
+                });
+        },
+        markAsCompleted(chore) {
+            axios.put(`http://localhost:8080/chores/${chore.id}/complete`)
+                .then(response => {
+                    if (response.data.status === 'success') {
+                        this.$message.success('Chore marked as completed');
+                        this.fetchChores();
+                    } else {
+                        this.$message.error('Failed to complete chore');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error completing chore:', error);
+                    this.$message.error('Failed to complete chore');
+                });
         }
     },
     mounted() {
         this.fetchChores()
+        this.fetchSpaceUsers()
+    },
+    computed: {
+        assignedUserId: {
+            get() {
+                return this.assignedUser ? this.assignedUser.id : null;
+            },
+            set(value) {
+                this.assignUser(this.id, value);
+            }
+        }
     }
 }
 </script>

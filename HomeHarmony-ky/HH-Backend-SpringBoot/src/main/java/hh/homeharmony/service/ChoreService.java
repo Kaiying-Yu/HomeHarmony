@@ -9,5 +9,5 @@ public interface ChoreService {
     Chore createChore(Chore chore);
     Chore updateChore(Chore chore);
     void deleteChore(Integer id);
-    //void assignUserToChore(Chore chore, String strategyType, String userId);
+    void assignUserToChore(Integer choreId, Integer userId);
 }
