@@ -25,17 +25,17 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public void createUser(User user) {
-    userMapper.insertUser(user);
+    userMapper.insert(user);
   }
 
   @Override
   public void updateUser(User user) {
-    userMapper.updateUser(user);
+    userMapper.update(user);
   }
 
   @Override
   public void deleteUser(Integer id) {
-    userMapper.deleteUser(id);
+    userMapper.deleteById(id);
   }
 
   @Override

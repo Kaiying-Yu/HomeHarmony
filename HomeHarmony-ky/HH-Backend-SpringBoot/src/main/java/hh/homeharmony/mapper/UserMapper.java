@@ -1,41 +1,74 @@
 package hh.homeharmony.mapper;
 
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
-
 import hh.homeharmony.model.User;
+import org.apache.ibatis.annotations.*;
+
+import java.util.List;
 
 /**
- * Mapper for the User entity.
- * Provides SQL statements for CRUD operations on Users within the database.
- * Utilizes MyBatis annotations to define SQL queries and mappings.
+ * Mapper interface for performing database operations on User objects.
+ * Uses MyBatis annotations for SQL mappings.
+ *
+ * Provides CRUD operations for the User table.
  *
  * @author hh
  */
 @Mapper
 public interface UserMapper {
-  @Select("SELECT * FROM users WHERE id = #{id}")
-  User findUserById(@Param("id") Integer id);
 
-  @Insert("INSERT INTO users (username, email, password, space_id) VALUES (#{username}, #{email}, #{password}, #{occupiedSpace.id})")
+  /**
+   * Inserts a new User into the database.
+   *
+   * @param user The User object to insert.
+   */
+  @Insert("INSERT INTO user (name, email, password) VALUES (#{name}, #{email}, #{password})")
   @Options(useGeneratedKeys = true, keyProperty = "id")
-  void insertUser(User user);
+  void insert(User user);
 
-  @Update("UPDATE users SET username = #{name}, email = #{email}, password = #{password}, space_id = #{occupiedSpace.id} WHERE id = #{id}")
-  void updateUser(User user);
+  /**
+   * Finds a User by their ID.
+   *
+   * @param id The ID of the User.
+   * @return The User with the specified ID.
+   */
+  @Select("SELECT * FROM user WHERE id = #{id}")
+  User findById(Integer id);
 
-  @Delete("DELETE FROM users WHERE id = #{id}")
-  void deleteUser(Integer id);
+  /**
+   * Finds a User by their email.
+   *
+   * @param email The email of the User.
+   * @return The User with the specified email.
+   */
+  @Select("SELECT * FROM user WHERE email = #{email}")
+  User findByEmail(String email);
 
-  @Select("select * from users where username=#{username} and password=#{password}")
+  /**
+   * Finds all Users in the database.
+   *
+   * @return A list of all Users.
+   */
+  @Select("SELECT * FROM user")
+  List<User> findAll();
+
+  /**
+   * Updates the details of an existing User.
+   *
+   * @param user The User object with updated details.
+   */
+  @Update("UPDATE user SET name = #{name}, email = #{email}, password = #{password} WHERE id = #{id}")
+  void update(User user);
+
+  /**
+   * Deletes a User by their ID.
+   *
+   * @param id The ID of the User to delete.
+   */
+  @Delete("DELETE FROM user WHERE id = #{id}")
+  void deleteById(Integer id);
+
+  @Select("SELECT * FROM user WHERE email = #{email} AND password = #{password}")
   User getByUsernameAndPassword(User user);
 
-  @Update("UPDATE users SET space_id = #{spaceId} WHERE id = #{userId}")
-  void updateUserSpace(@Param("userId") Integer userId, @Param("spaceId") Integer spaceId);
+  User findUserById(Integer id);
 }
-

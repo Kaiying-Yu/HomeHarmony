@@ -23,14 +23,14 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user) {
-        log.info("Login attempt for user: {}", user.getUsername());
+        log.info("Login attempt for user: {}", user.getName());
         User authenticatedUser = userService.login(user);
         
         if (authenticatedUser != null) {
-            log.info("Login successful for user: {}", user.getUsername());
+            log.info("Login successful for user: {}", user.getName());
             return ResponseEntity.ok(authenticatedUser);
         } else {
-            log.warn("Login failed for user: {}", user.getUsername());
+            log.warn("Login failed for user: {}", user.getName());
             return ResponseEntity.status(401).body("Invalid credentials");
         }
     }
