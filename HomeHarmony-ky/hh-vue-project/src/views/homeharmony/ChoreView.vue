@@ -7,7 +7,7 @@
             </div>
 
             <!-- Chores table -->
-            <el-table :data="tableData" border>
+            <el-table :data="sortedTableData" border>
                 <el-table-column prop="choreName" label="Chore Name" width="200"></el-table-column>
                 <el-table-column prop="points" label="Points" width="180"></el-table-column>
                 <el-table-column prop="dueDate" label="Due Date" width="180"></el-table-column>
@@ -22,20 +22,26 @@
                     <template #default="scope">
                         <div v-if="scope.row.assignedUser">
                             {{ scope.row.assignedUser.username }}
-                            <el-button type="text" size="mini" @click="scope.row.showSelect = true" v-if="!scope.row.showSelect">
+                            <el-button 
+                                type="text" 
+                                size="mini" 
+                                @click="handleChangeClick(scope.row)" 
+                                v-if="scope.row.choreStatus !== 'COMPLETED'">
                                 Change
                             </el-button>
                         </div>
                         <el-select
-                            v-if="!scope.row.assignedUser || scope.row.showSelect"
+                            v-else
                             v-model="scope.row.assignedUserId"
                             placeholder="Assign user"
+                            :loading="loadingUsers"
+                            filterable
                             @change="(value) => {
                                 assignUser(scope.row.id, value);
                                 scope.row.showSelect = false;
                             }">
                             <el-option
-                                v-for="user in spaceUsers"
+                                v-for="user in cachedSpaceUsers"
                                 :key="user.id"
                                 :label="user.username"
                                 :value="user.id">
@@ -109,7 +115,9 @@ export default {
                 dueDate: '',
                 choreStatus: 'PENDING'
             },
-            spaceUsers: [],
+            loadingUsers: false,
+            userCache: null,
+            lastFetchTime: null,
         }
     },
     methods: {
@@ -185,26 +193,39 @@ export default {
                     this.$message.error('Failed to fetch chores');
                 });
         },
-        fetchSpaceUsers() {
+        async fetchSpaceUsers() {
+            // Don't fetch if we have recent data (cache for 5 minutes)
+            const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
+            if (this.userCache && this.lastFetchTime && 
+                (Date.now() - this.lastFetchTime < CACHE_DURATION)) {
+                return;
+            }
+
+            this.loadingUsers = true;
             const spaceId = localStorage.getItem('spaceId');
-            if (!spaceId) return;
+            if (!spaceId) {
+                this.loadingUsers = false;
+                return;
+            }
             
-            axios.get(`http://localhost:8080/space/${spaceId}`)
-                .then(response => {
-                    if (response.data && response.data.users) {
-                        this.spaceUsers = response.data.users;
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching space users:', error);
-                    this.$message.error('Failed to fetch space users');
-                });
+            try {
+                const response = await axios.get(`http://localhost:8080/space/${spaceId}`);
+                if (response.data && response.data.users) {
+                    this.userCache = response.data.users;
+                    this.lastFetchTime = Date.now();
+                }
+            } catch (error) {
+                console.error('Error fetching space users:', error);
+                this.$message.error('Failed to fetch space users');
+            } finally {
+                this.loadingUsers = false;
+            }
         },
         assignUser(choreId, userId) {
             axios.put(`http://localhost:8080/chores/${choreId}/assign/${userId}`)
                 .then(response => {
                     if (response.data.status === 'success') {
-                        const assignedUser = this.spaceUsers.find(user => user.id === userId);
+                        const assignedUser = this.cachedSpaceUsers.find(user => user.id === userId);
                         const chore = this.tableData.find(c => c.id === choreId);
                         if (chore) {
                             chore.assignedUser = assignedUser;
@@ -224,8 +245,11 @@ export default {
             axios.put(`http://localhost:8080/chores/${chore.id}/complete`)
                 .then(response => {
                     if (response.data.status === 'success') {
+                        const updatedChore = this.tableData.find(c => c.id === chore.id);
+                        if (updatedChore) {
+                            updatedChore.choreStatus = 'COMPLETED';
+                        }
                         this.$message.success('Chore marked as completed');
-                        this.fetchChores();
                     } else {
                         this.$message.error('Failed to complete chore');
                     }
@@ -234,6 +258,10 @@ export default {
                     console.error('Error completing chore:', error);
                     this.$message.error('Failed to complete chore');
                 });
+        },
+        async handleChangeClick(row) {
+            await this.fetchSpaceUsers();  // Ensure users are fetched
+            row.showSelect = true;  // Show the select dropdown
         }
     },
     mounted() {
@@ -248,6 +276,20 @@ export default {
             set(value) {
                 this.assignUser(this.id, value);
             }
+        },
+        sortedTableData() {
+            return [...this.tableData].sort((a, b) => {
+                if (a.choreStatus === 'COMPLETED' && b.choreStatus !== 'COMPLETED') {
+                    return 1;
+                }
+                if (a.choreStatus !== 'COMPLETED' && b.choreStatus === 'COMPLETED') {
+                    return -1;
+                }
+                return 0;
+            });
+        },
+        cachedSpaceUsers() {
+            return this.userCache || [];
         }
     }
 }

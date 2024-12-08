@@ -67,4 +67,15 @@ public class ChoreServiceImpl implements ChoreService {
         chore.setStatus(ChoreStatus.IN_PROGRESS);
         choreMapper.update(chore);
     }
+
+    @Override
+    public void completeChore(Integer choreId) {
+        Chore chore = choreMapper.selectById(choreId);
+        if (chore == null) {
+            throw new IllegalArgumentException("Chore not found");
+        }
+        
+        chore.markAsCompleted();
+        choreMapper.update(chore);
+    }
 }

@@ -67,6 +67,7 @@ public class Chore extends BaseEntity implements IChore {
     public void setEstimatedTime(Duration estimatedTime) {
         this.estimatedTime = estimatedTime;
     }
+
     public void assignUser(User user) {
         if (user == null) {
             throw new IllegalArgumentException("User cannot be null");

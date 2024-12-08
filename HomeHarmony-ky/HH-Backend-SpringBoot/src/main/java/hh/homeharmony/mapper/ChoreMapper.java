@@ -42,7 +42,8 @@ public interface ChoreMapper {
     void insert(Chore chore);
 
     @Update("UPDATE chores SET chore_name = #{choreName}, points = #{points}, " +
-            "due_date = #{dueDate}, status = #{status} " +
+            "due_date = #{dueDate}, status = #{status}, " +
+            "assigned_user_id = #{assignedUser.id} " +
             "WHERE id = #{id}")
     void update(Chore chore);
 
