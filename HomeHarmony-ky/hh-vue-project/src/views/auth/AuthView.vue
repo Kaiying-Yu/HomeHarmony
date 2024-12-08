@@ -53,8 +53,9 @@ export default {
         if (response.data && response.data.id) {
           localStorage.setItem('userId', response.data.id);
           localStorage.setItem('username', response.data.username);
-          localStorage.setItem('email', response.data.email);
-          
+          if (response.data.spaceId) {
+            localStorage.setItem('spaceId', response.data.spaceId);
+          }
           this.$router.push('/space');
           this.$message.success('Login successful');
         } else {

@@ -12,6 +12,6 @@ public interface SpaceService {
   Space getSpaceById(Integer id); // Fetches a Space by its ID
   Space createSpace(Space space); // Creates a new Space
   void updateSpace(Space space); // Updates an existing Space
-  void deleteSpace(Integer id); // Deletes a Space by its ID
   void addUserToSpace(Integer spaceId, Integer userId);
+  void removeUserFromSpace(Integer spaceId, Integer userId);
 }

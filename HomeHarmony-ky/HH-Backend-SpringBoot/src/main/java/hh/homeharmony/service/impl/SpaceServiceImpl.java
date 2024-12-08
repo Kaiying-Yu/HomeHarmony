@@ -30,7 +30,7 @@ public class SpaceServiceImpl implements SpaceService {
     Space space = spaceMapper.findSpaceById(id);
     if (space != null) {
         space.setUsers(spaceMapper.findUsersBySpaceId(id));
-        space.setFunctionalSpaces(spaceMapper.findFunctionalSpacesBySpaceId(id));
+        //space.setFunctionalSpaces(spaceMapper.findFunctionalSpacesBySpaceId(id));
     }
     return space;
   }
@@ -48,7 +48,7 @@ public class SpaceServiceImpl implements SpaceService {
     }
     
     space.setUsers(new ArrayList<>());
-    space.setFunctionalSpaces(new ArrayList<>());
+    //space.setFunctionalSpaces(new ArrayList<>());
     space.setChoreIds(new ArrayList<>());
     
     spaceMapper.insertSpace(space);
@@ -62,11 +62,6 @@ public class SpaceServiceImpl implements SpaceService {
   @Override
   public void updateSpace(Space space) {
     spaceMapper.updateSpace(space); // Update existing Space details
-  }
-
-  @Override
-  public void deleteSpace(Integer id) {
-    spaceMapper.deleteSpace(id); // Remove Space from the database
   }
 
   @Override
@@ -84,5 +79,28 @@ public class SpaceServiceImpl implements SpaceService {
     space.addUser(user);
     spaceMapper.updateSpace(space);
     userMapper.updateUserSpace(userId, spaceId);
+  }
+
+  @Override
+  public void removeUserFromSpace(Integer spaceId, Integer userId) {
+    Space space = spaceMapper.findSpaceById(spaceId);
+    if (space == null) {
+        throw new IllegalArgumentException("Space not found");
+    }
+    
+    space.setUsers(spaceMapper.findUsersBySpaceId(spaceId));
+    
+    User user = userMapper.findUserById(userId);
+    if (user == null) {
+        throw new IllegalArgumentException("User not found");
+    }
+    
+    if (!space.getUsers().stream().anyMatch(u -> u.getId().equals(userId))) {
+        throw new IllegalStateException("User is not a member of this space");
+    }
+    
+    space.removeUser(user);
+    spaceMapper.updateSpace(space);
+    userMapper.updateUserSpace(userId, null);
   }
 }

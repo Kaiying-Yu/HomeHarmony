@@ -9,7 +9,6 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
-import hh.homeharmony.model.FunctionalSpace;
 import hh.homeharmony.model.Space;
 import hh.homeharmony.model.User;
 
@@ -38,6 +37,4 @@ public interface SpaceMapper {
   @Select("SELECT * FROM users WHERE space_id = #{spaceId}")
   List<User> findUsersBySpaceId(Integer spaceId);
 
-  @Select("SELECT * FROM functional_spaces WHERE space_id = #{spaceId}")
-  List<FunctionalSpace> findFunctionalSpacesBySpaceId(Integer spaceId);
 }

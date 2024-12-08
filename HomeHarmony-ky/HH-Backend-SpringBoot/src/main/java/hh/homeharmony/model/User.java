@@ -19,6 +19,8 @@ public class User extends BaseEntity {
   private String username;
   private String email;
   private String password;
+  private Integer points;
+  private Integer spaceId;
   private List<Integer> assignedChores; // Chores assigned to the user
 
 }

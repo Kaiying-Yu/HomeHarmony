@@ -1,12 +1,29 @@
 package hh.homeharmony.controller;
 
-import hh.homeharmony.model.User;
-import hh.homeharmony.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import java.util.HashMap;
+import java.util.Map;
 
-@CrossOrigin(origins = "http://localhost:7000")
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import hh.homeharmony.model.User;
+import hh.homeharmony.service.SpaceService;
+import hh.homeharmony.service.UserService;
+
+@CrossOrigin(origins = "http://localhost:7000", methods = {
+    RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS
+})
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -14,13 +31,25 @@ public class UserController {
   @Autowired
   private UserService userService;
 
+  @Autowired
+  private SpaceService spaceService;
+
   @GetMapping("/{id}")
-  public ResponseEntity<User> getUserById(@PathVariable Integer id) {
-    User user = userService.getUserById(id);
-    if (user != null) {
-      return ResponseEntity.ok(user);
-    } else {
-      return ResponseEntity.notFound().build();
+  public ResponseEntity<Map<String, Object>> getUserById(@PathVariable Integer id) {
+    try {
+        User user = userService.getUserById(id);
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", "success");
+        response.put("data", user);
+        if (user.getSpaceId() != null) {
+            response.put("spaceId", user.getSpaceId());
+        }
+        return ResponseEntity.ok(response);
+    } catch (Exception e) {
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put("status", "error");
+        errorResponse.put("message", e.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
   }
 

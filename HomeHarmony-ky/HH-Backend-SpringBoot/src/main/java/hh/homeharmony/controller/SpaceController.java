@@ -1,5 +1,8 @@
 package hh.homeharmony.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -10,12 +13,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import hh.homeharmony.model.Space;
 import hh.homeharmony.service.SpaceService;
 
-@CrossOrigin(origins = "http://localhost:7000")
+@CrossOrigin(origins = "http://localhost:7000", methods = {
+    RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS
+})
 @RestController
 @RequestMapping("/space")
 public class SpaceController {
@@ -55,14 +61,31 @@ public class SpaceController {
     }
   }
 
-  @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteSpace(@PathVariable Integer id) {
-    Space existingSpace = spaceService.getSpaceById(id);
-    if (existingSpace != null) {
-      spaceService.deleteSpace(id);
-      return ResponseEntity.ok().build();
-    } else {
-      return ResponseEntity.notFound().build();
+  @PostMapping("/{spaceId}/users/{userId}")
+  public ResponseEntity<?> addUserToSpace(@PathVariable Integer spaceId, @PathVariable Integer userId) {
+    try {
+        spaceService.addUserToSpace(spaceId, userId);
+        return ResponseEntity.ok().build();
+    } catch (IllegalArgumentException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
+    } catch (Exception e) {
+        return ResponseEntity.internalServerError().body("Failed to add user to space");
+    }
+  }
+
+  @DeleteMapping("/{spaceId}/users/{userId}")
+  public ResponseEntity<?> removeUserFromSpace(@PathVariable Integer spaceId, @PathVariable Integer userId) {
+    try {
+        spaceService.removeUserFromSpace(spaceId, userId);
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", "success");
+        response.put("message", "Successfully left the space");
+        return ResponseEntity.ok(response);
+    } catch (IllegalArgumentException | IllegalStateException e) {
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put("status", "error");
+        errorResponse.put("message", e.getMessage());
+        return ResponseEntity.badRequest().body(errorResponse);
     }
   }
 }

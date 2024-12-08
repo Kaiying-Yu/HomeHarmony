@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Space extends BaseEntity implements ISpace {
   private String name;
-  private List<FunctionalSpace> functionalSpaces; // References to FunctionalSpace entities by ID
+  //private List<FunctionalSpace> functionalSpaces; // References to FunctionalSpace entities by ID
   private List<User> users; // List of Users associated with the Space
   private List<Integer> choreIds; // List of Chore IDs
  

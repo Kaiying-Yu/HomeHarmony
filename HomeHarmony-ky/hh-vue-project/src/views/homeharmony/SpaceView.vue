@@ -13,8 +13,10 @@
             <!-- Space Header Card -->
             <el-card class="space-header">
                 <div class="space-title">
-                    <h2>{{ currentSpace.name }}</h2>
-                    <el-tag type="success">{{ currentSpace.users.length }} Members</el-tag>
+                    <h2>{{ currentSpace ? currentSpace.name : 'No Space Joined' }}</h2>
+                    <div v-if="currentSpace">
+                        <el-button type="danger" @click="quitSpace">Quit Space</el-button>
+                    </div>
                 </div>
             </el-card>
 
@@ -215,10 +217,13 @@ export default {
             if (this.currentSpace && this.currentSpace.choreIds) {
                 axios.get(`http://localhost:8080/chores/space/${this.currentSpace.id}`)
                     .then(response => {
-                        this.spaceChores = response.data;
+                        if (response.data.status === 'success') {
+                            this.spaceChores = response.data.data;
+                        }
                     })
                     .catch(error => {
                         console.error('Error fetching chores:', error);
+                        this.$message.error('Failed to fetch chores');
                     });
             }
         },
@@ -244,20 +249,44 @@ export default {
                 return;
             }
             
-            axios.post(`http://localhost:8080/space/join`, {
-                spaceId: spaceId,
-                userId: parseInt(userId)
-            })
-            .then(() => {
-                this.$message.success('Successfully joined space!');
-                this.joinDialogVisible = false;
-                this.joinSpace.spaceId = '';
-                localStorage.setItem('spaceId', spaceId);
-                this.fetchCurrentSpace();
-            })
-            .catch(error => {
-                this.$message.error('Failed to join space: ' + error.response.data);
-                console.error('Error:', error);
+            axios.post(`http://localhost:8080/space/${spaceId}/users/${userId}`)
+                .then(() => {
+                    this.$message.success('Successfully joined space!');
+                    this.joinDialogVisible = false;
+                    this.joinSpace.spaceId = '';
+                    localStorage.setItem('spaceId', spaceId);
+                    this.fetchCurrentSpace();
+                })
+                .catch(error => {
+                    const errorMessage = error.response?.data || 'Failed to join space';
+                    this.$message.error(errorMessage);
+                    console.error('Error:', error);
+                });
+        },
+        quitSpace() {
+            this.$confirm('Are you sure you want to quit this space?', 'Warning', {
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No',
+                type: 'warning'
+            }).then(() => {
+                const userId = localStorage.getItem('userId');
+                const spaceId = this.currentSpace.id;
+                
+                axios.delete(`http://localhost:8080/space/${spaceId}/users/${userId}`)
+                    .then(response => {
+                        if (response.data.status === 'success') {
+                            this.$message.success(response.data.message);
+                            localStorage.removeItem('spaceId');
+                            this.currentSpace = null;
+                            this.spaceChores = [];
+                        } else {
+                            this.$message.error(response.data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error quitting space:', error);
+                        this.$message.error(error.response?.data?.message || 'Failed to quit space');
+                    });
             });
         }
     },
@@ -266,12 +295,26 @@ export default {
     },
     created() {
         const userId = localStorage.getItem('userId');
-        console.log('UserId from localStorage:', userId);
         if (!userId) {
             this.$message.error('User ID not found. Please login again.');
-            // Redirect to login page
             this.$router.push('/login');
+            return;
         }
+        
+        axios.get(`http://localhost:8080/user/${userId}`)
+            .then(response => {
+                if (response.data.status === 'success') {
+                    const user = response.data.data;
+                    if (user.spaceId) {
+                        localStorage.setItem('spaceId', user.spaceId);
+                        this.fetchCurrentSpace();
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching user:', error);
+                this.$message.error('Failed to fetch user information');
+            });
     }
 }
 </script> 

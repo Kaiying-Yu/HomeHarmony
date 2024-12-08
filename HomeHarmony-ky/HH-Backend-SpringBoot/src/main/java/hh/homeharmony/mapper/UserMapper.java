@@ -1,5 +1,6 @@
 package hh.homeharmony.mapper;
 
+import java.util.List;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -37,5 +38,8 @@ public interface UserMapper {
 
   @Update("UPDATE users SET space_id = #{spaceId} WHERE id = #{userId}")
   void updateUserSpace(@Param("userId") Integer userId, @Param("spaceId") Integer spaceId);
+
+  @Select("select * from users")
+  List<User> getAllUsers();
 }
 
