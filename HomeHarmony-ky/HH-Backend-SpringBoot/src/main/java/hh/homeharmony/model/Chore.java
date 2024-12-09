@@ -14,8 +14,8 @@ public class Chore extends BaseEntity implements IChore {
     private FunctionalSpaceType functionalSpaceType;// Functional space type
     private Duration estimatedTime;// Estimated time to complete the chore
     private Integer points;
-    private LocalDateTime createDate;//数据库多的
-    private LocalDateTime dueDate;//数据库多的
+    private LocalDateTime createDate;
+    private LocalDateTime dueDate;
     private ChoreStatus status;
     private User assignedUser;
 

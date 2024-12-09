@@ -6,12 +6,17 @@
             </div>
             
             <el-row :gutter="20">
-                <el-col :span="8" v-for="user in tableData" :key="user.id">
-                    <el-card class="member-card" shadow="hover">
+                <el-col :span="8" v-for="user in sortedUsers" :key="user.id">
+                    <el-card :class="['member-card', { 'champion-card': isChampion(user) }]" shadow="hover">
                         <div class="member-header">
                             <div class="member-info">
-                                <h3>{{ user.username }}</h3>
-                                <el-tag size="small" type="success">{{ user.points }} Points</el-tag>
+                                <div class="username-container">
+                                    <h3>{{ user.username }}</h3>
+                                    <i v-if="isChampion(user)" class="el-icon-trophy champion-icon"></i>
+                                </div>
+                                <el-tag size="small" :type="isChampion(user) ? 'warning' : 'success'">
+                                    {{ user.points }} Points
+                                </el-tag>
                             </div>
                         </div>
                         
@@ -30,7 +35,15 @@
                                 </el-table-column>
                                 <el-table-column
                                     prop="functionalSpaceType"
-                                    label="Functional Space">
+                                    label="Space Type">
+                                </el-table-column>
+                                <el-table-column
+                                    prop="points"
+                                    label="Points"
+                                    width="80">
+                                    <template slot-scope="scope">
+                                        <el-tag size="mini" type="info">{{ scope.row.points }}</el-tag>
+                                    </template>
                                 </el-table-column>
                             </el-table>
                             <div v-else class="no-chores">
@@ -58,6 +71,11 @@ export default {
             tableData: [],
             userChores: {},
             loadingUsers: false
+        }
+    },
+    computed: {
+        sortedUsers() {
+            return [...this.tableData].sort((a, b) => b.points - a.points);
         }
     },
     methods: {
@@ -94,6 +112,11 @@ export default {
                 .catch((error) => {
                     console.error('Error fetching user chores:', error);
                 });
+        },
+        isChampion(user) {
+            if (!this.tableData.length) return false;
+            const maxPoints = Math.max(...this.tableData.map(u => u.points));
+            return user.points === maxPoints && user.points > 0;
         }
     },
     mounted() {
@@ -150,5 +173,28 @@ export default {
     margin-bottom: 15px;
     color: #5e3a1a;
     font-weight: bold;
+}
+
+.champion-card {
+    border: 2px solid #ffd700;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.2) !important;
+}
+
+.username-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.champion-icon {
+    color: #ffd700;
+    font-size: 20px;
+    animation: shine 2s infinite;
+}
+
+@keyframes shine {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
 }
 </style>

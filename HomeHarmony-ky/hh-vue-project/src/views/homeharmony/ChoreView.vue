@@ -122,9 +122,51 @@ export default {
             loadingUsers: false,
             userCache: null,
             lastFetchTime: null,
+            resizeObserver: null
+        }
+    },
+    mounted() {
+        this.fetchChores()
+        this.fetchSpaceUsers()
+        
+        // Debounced resize observer
+        this.setupResizeObserver()
+    },
+    beforeDestroy() {
+        // Cleanup resize observer
+        if (this.resizeObserver) {
+            this.resizeObserver.disconnect()
         }
     },
     methods: {
+        setupResizeObserver() {
+            let timeout
+            this.resizeObserver = new ResizeObserver((entries) => {
+                // Debounce the resize callback
+                clearTimeout(timeout)
+                timeout = setTimeout(() => {
+                    entries.forEach(entry => {
+                        // Handle resize if needed
+                        if (entry.target.classList.contains('el-table__body-wrapper')) {
+                            this.$nextTick(() => {
+                                const table = this.$el.querySelector('.el-table')
+                                if (table && table.__vue__) {
+                                    table.__vue__.doLayout()
+                                }
+                            })
+                        }
+                    })
+                }, 16) // 60fps throttle
+            })
+
+            // Observe the table wrapper
+            this.$nextTick(() => {
+                const tableWrapper = this.$el.querySelector('.el-table__body-wrapper')
+                if (tableWrapper) {
+                    this.resizeObserver.observe(tableWrapper)
+                }
+            })
+        },
         getStatusType(status) {
             switch (status) {
                 case 'PENDING': return 'warning'
@@ -279,10 +321,6 @@ export default {
                 .join(' ');
         }
     },
-    mounted() {
-        this.fetchChores()
-        this.fetchSpaceUsers()
-    },
     computed: {
         assignedUserId: {
             get() {
@@ -319,6 +357,20 @@ export default {
 <style>
 .chore-container {
     padding: 20px;
+    position: relative;
+    max-width: 100%;
+}
+
+:deep(.el-table) {
+    max-width: 100%;
+}
+
+:deep(.el-table__body-wrapper) {
+    overflow-x: auto !important;
+}
+
+:deep(.el-table__header-wrapper) {
+    overflow-x: hidden !important;
 }
 
 .header-actions {
@@ -332,4 +384,5 @@ export default {
     justify-content: flex-end;
     gap: 10px;
 }
+
 </style>

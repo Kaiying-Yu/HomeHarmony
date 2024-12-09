@@ -16,7 +16,6 @@ import hh.homeharmony.service.ChoreService;
 @Service
 public class ChoreServiceImpl implements ChoreService {
 
-
     @Autowired
     private ChoreMapper choreMapper;
 
