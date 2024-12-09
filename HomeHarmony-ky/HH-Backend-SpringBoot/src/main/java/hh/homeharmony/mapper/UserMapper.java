@@ -21,7 +21,7 @@ import hh.homeharmony.model.User;
  */
 @Mapper
 public interface UserMapper {
-  @Select("SELECT * FROM users WHERE id = #{id}")
+  @Select("SELECT id, username, email, password, space_id as spaceId, points FROM users WHERE id = #{id}")
   User findUserById(@Param("id") Integer id);
 
   @Insert("INSERT INTO users (username, email, password, space_id) VALUES (#{username}, #{email}, #{password}, #{occupiedSpace.id})")
@@ -42,6 +42,12 @@ public interface UserMapper {
 
   @Select("select * from users")
   List<User> getAllUsers();
+
+  @Select("SELECT id, username, points FROM users WHERE space_id = #{spaceId}")
+  List<User> findUsersBySpaceId(Integer spaceId);
+
+  @Update("UPDATE users SET points = #{points} WHERE id = #{id}")
+  void updatePoints(User user);
 
 }
 

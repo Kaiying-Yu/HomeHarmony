@@ -22,25 +22,8 @@
 
             <!-- Cards Grid -->
             <el-row :gutter="20" class="card-grid">
-                <!-- Functional Spaces Card -->
-                <el-col :span="12">
-                    <el-card class="box-card">
-                        <template #header>
-                            <div class="card-header">
-                                <span><i class="el-icon-office-building"></i> Functional Spaces</span>
-                            </div>
-                        </template>
-                        <div v-for="space in currentSpace.functionalSpaces" 
-                             :key="space.id" 
-                             class="functional-space-item">
-                            <span>{{ space.name }}</span>
-                            <el-tag size="small" type="info">{{ space.choreTemplates.length }} templates</el-tag>
-                        </div>
-                    </el-card>
-                </el-col>
-
                 <!-- Team Members Card -->
-                <el-col :span="12">
+                <el-col :span="24">
                     <el-card class="box-card">
                         <template #header>
                             <div class="card-header">
@@ -50,7 +33,10 @@
                         <div v-for="user in currentSpace.users" 
                              :key="user.id" 
                              class="user-item">
-                            <span>{{ user.username }}</span>
+                            <div class="user-info">
+                                <span>{{ user.username }}</span>
+                                <span class="user-points">Points: {{ user.points }}</span>
+                            </div>
                             <el-tag size="small" type="success">Active</el-tag>
                         </div>
                     </el-card>
@@ -218,27 +204,40 @@ export default {
                 });
         },
         quitSpace() {
+            const userId = localStorage.getItem('userId');
+            const spaceId = this.currentSpace.id;
+            
+            console.log('Attempting to quit space with:', {
+                userId,
+                spaceId,
+                currentSpace: this.currentSpace,
+                localStorage: {
+                    userId: localStorage.getItem('userId'),
+                    spaceId: localStorage.getItem('spaceId')
+                }
+            });
+
             this.$confirm('Are you sure you want to quit this space?', 'Warning', {
                 confirmButtonText: 'Yes',
                 cancelButtonText: 'No',
                 type: 'warning'
             }).then(() => {
-                const userId = localStorage.getItem('userId');
-                const spaceId = this.currentSpace.id;
-                
                 axios.delete(`http://localhost:8080/space/${spaceId}/users/${userId}`)
-                    .then(response => {
-                        if (response.data.status === 'success') {
-                            this.$message.success(response.data.message);
-                            localStorage.removeItem('spaceId');
-                            this.currentSpace = null;
-                        } else {
-                            this.$message.error(response.data.message);
-                        }
+                    .then(() => {
+                        this.$message.success('Successfully quit the space');
+                        localStorage.removeItem('spaceId');
+                        this.currentSpace = null;
                     })
                     .catch(error => {
-                        console.error('Error quitting space:', error);
-                        this.$message.error(error.response?.data?.message || 'Failed to quit space');
+                        console.error('Error quitting space:', {
+                            error,
+                            response: error.response?.data,
+                            status: error.response?.status
+                        });
+                        const errorMessage = error.response?.data?.message 
+                            || error.response?.data?.error 
+                            || 'Failed to quit space';
+                        this.$message.error(errorMessage);
                     });
             });
         }
@@ -378,5 +377,15 @@ export default {
 
 .box-card {
     margin-bottom: 20px;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+}
+.user-points {
+    font-size: 12px;
+    color: #909399;
+    margin-top: 4px;
 }
 </style> 

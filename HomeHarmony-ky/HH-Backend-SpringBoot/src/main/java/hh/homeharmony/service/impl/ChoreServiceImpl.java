@@ -69,13 +69,18 @@ public class ChoreServiceImpl implements ChoreService {
     }
 
     @Override
-    public void completeChore(Integer choreId) {
+    public Chore completeChore(Integer choreId) {
         Chore chore = choreMapper.selectById(choreId);
         if (chore == null) {
             throw new IllegalArgumentException("Chore not found");
         }
-        
         chore.markAsCompleted();
         choreMapper.update(chore);
+        return chore;
+    }
+
+    @Override
+    public List<Chore> getChoresByUserId(Integer userId) {
+        return choreMapper.findChoresByUserId(userId);
     }
 }

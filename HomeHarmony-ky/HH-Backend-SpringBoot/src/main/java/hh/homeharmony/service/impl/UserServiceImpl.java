@@ -42,4 +42,14 @@ public class UserServiceImpl implements UserService {
   public User login(User user) {
     return userMapper.getByUsernameAndPassword(user);
   }
+
+  @Override
+  public void addPoints(Integer userId, Integer points) {
+    User user = userMapper.findUserById(userId);
+    if (user != null) {
+        Integer currentPoints = user.getPoints() != null ? user.getPoints() : 0;
+        user.setPoints(currentPoints + points);
+        userMapper.updatePoints(user);
+    }
+  }
 }

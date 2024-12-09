@@ -10,5 +10,6 @@ public interface ChoreService {
     Chore updateChore(Chore chore);
     void deleteChore(Integer id);
     void assignUserToChore(Integer choreId, Integer userId);
-    void completeChore(Integer choreId);
+    Chore completeChore(Integer choreId);
+    List<Chore> getChoresByUserId(Integer userId);
 }

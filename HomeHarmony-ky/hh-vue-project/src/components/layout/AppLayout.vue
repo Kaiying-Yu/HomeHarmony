@@ -4,6 +4,9 @@
             <el-header style="font-size:40px; background-color: rgb(238, 241, 246)">
                 <div style="display: flex; justify-content: space-between; align-items: center">
                     <span>HomeHarmony</span>
+                    <div class="user-welcome">
+                        <span>Welcome, <span class="username">{{ username }}</span></span>
+                    </div>
                 </div>
             </el-header>
             <el-container>
@@ -34,6 +37,11 @@ import axios from 'axios';
 
 export default {
     name: 'AppLayout',
+    data() {
+        return {
+            username: localStorage.getItem('username') || 'Guest'
+        }
+    },
     methods: {
         async handleLogout() {
             try {
@@ -50,4 +58,19 @@ export default {
         }
     }
 }
-</script> 
+</script>
+
+<style scoped>
+.user-welcome {
+    font-size: 24px;
+    color: #2c3e50;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    letter-spacing: -0.5px;
+}
+
+.username {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-left: 4px;
+}
+</style> 

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import hh.homeharmony.model.Chore;
 import hh.homeharmony.model.User;
 import hh.homeharmony.service.ChoreService;
+import hh.homeharmony.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,6 +32,9 @@ import lombok.NoArgsConstructor;
 public class ChoreController {
     @Autowired
     private ChoreService choreService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping
     public ResponseEntity<Map<String, Object>> getAllChores() {
@@ -86,10 +90,31 @@ public class ChoreController {
     @PutMapping("/{choreId}/complete")
     public ResponseEntity<Map<String, Object>> completeChore(@PathVariable Integer choreId) {
         try {
-            choreService.completeChore(choreId);
+            Chore chore = choreService.completeChore(choreId);
+            // Update user points
+            if (chore.getAssignedUser() != null) {
+                userService.addPoints(chore.getAssignedUser().getId(), chore.getPoints());
+            }
+            
             Map<String, Object> response = new HashMap<>();
             response.put("status", "success");
-            response.put("message", "Chore marked as completed");
+            response.put("message", "Chore completed successfully");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("status", "error");
+            errorResponse.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<Map<String, Object>> getChoresByUserId(@PathVariable Integer userId) {
+        try {
+            List<Chore> chores = choreService.getChoresByUserId(userId);
+            Map<String, Object> response = new HashMap<>();
+            response.put("status", "success");
+            response.put("data", chores);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             Map<String, Object> errorResponse = new HashMap<>();

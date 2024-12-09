@@ -36,5 +36,4 @@ public interface SpaceMapper {
 
   @Select("SELECT * FROM users WHERE space_id = #{spaceId}")
   List<User> findUsersBySpaceId(Integer spaceId);
-
 }

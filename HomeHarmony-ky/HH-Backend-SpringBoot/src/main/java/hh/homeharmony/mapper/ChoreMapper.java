@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.One;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Results;
@@ -15,6 +16,7 @@ import org.apache.ibatis.annotations.Update;
 
 import hh.homeharmony.model.Chore;
 import hh.homeharmony.model.ChoreStatus;
+import hh.homeharmony.model.FunctionalSpaceType;
 
 @Mapper
 public interface ChoreMapper {
@@ -26,6 +28,8 @@ public interface ChoreMapper {
         @Result(property = "createDate", column = "create_date"),
         @Result(property = "dueDate", column = "due_date"),
         @Result(property = "status", column = "status", javaType = ChoreStatus.class),
+        @Result(property = "functionalSpaceType", column = "functional_space_type", 
+                javaType = FunctionalSpaceType.class),
         @Result(property = "assignedUser", column = "assigned_user_id", 
                 one = @One(select = "hh.homeharmony.mapper.UserMapper.findUserById"))
     })
@@ -36,17 +40,21 @@ public interface ChoreMapper {
     @Select("SELECT * FROM chores WHERE id = #{id}")
     Chore selectById(Integer id);
 
-    @Insert("INSERT INTO chores (chore_name, points, due_date, create_date, status) " +
-           "VALUES (#{choreName}, #{points}, #{dueDate}, #{createDate}, #{status})")
+    @Insert("INSERT INTO chores (chore_name, points, due_date, create_date, status, functional_space_type) " +
+           "VALUES (#{choreName}, #{points}, #{dueDate}, #{createDate}, #{status}, #{functionalSpaceType})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insert(Chore chore);
 
     @Update("UPDATE chores SET chore_name = #{choreName}, points = #{points}, " +
             "due_date = #{dueDate}, status = #{status}, " +
+            "functional_space_type = #{functionalSpaceType}, " +
             "assigned_user_id = #{assignedUser.id} " +
             "WHERE id = #{id}")
     void update(Chore chore);
 
     @Delete("DELETE FROM chores WHERE id = #{id}")
     void deleteById(Integer id);
+
+    @Select("SELECT * FROM chores WHERE assigned_user_id = #{userId}")
+    List<Chore> findChoresByUserId(@Param("userId") Integer userId);
 }

@@ -1,7 +1,5 @@
 package hh.homeharmony.model;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,4 +21,11 @@ public class User extends BaseEntity {
   private Integer spaceId;
   //private List<Integer> assignedChores; // Chores assigned to the user
 
+  public Integer getPoints() {
+    return points;
+  }
+
+  public void setPoints(Integer points) {
+    this.points = points;
+  }
 }

@@ -1,17 +1,47 @@
 <template>
     <app-layout>
-        <el-table :data="tableData" border>
-            <el-table-column prop="userName" label="User Name" width="200"></el-table-column>
-            <el-table-column prop="points" label="Points" width="180"></el-table-column>
-            <el-table-column prop="createTime" label="Create Time" width="180"></el-table-column>
-            <el-table-column prop="updateTime" label="Update Time" width="180"></el-table-column>
-            <el-table-column label="Options">
-                <template #default="scope">
-                    <el-button type="primary" size="mini" @click="editUser(scope.row)">Edit</el-button>
-                    <el-button type="danger" size="mini" @click="deleteUser(scope.row.id)">Delete</el-button>
-                </template>
-            </el-table-column>
-        </el-table>
+        <div class="user-dashboard">
+            <div class="dashboard-header">
+                <h2>Space Members</h2>
+            </div>
+            
+            <el-row :gutter="20">
+                <el-col :span="8" v-for="user in tableData" :key="user.id">
+                    <el-card class="member-card" shadow="hover">
+                        <div class="member-header">
+                            <div class="member-info">
+                                <h3>{{ user.username }}</h3>
+                                <el-tag size="small" type="success">{{ user.points }} Points</el-tag>
+                            </div>
+                        </div>
+                        
+                        <div class="member-chores">
+                            <div class="section-title">
+                                <span>Assigned Chores</span>
+                            </div>
+                            
+                            <el-table
+                                v-if="userChores[user.id] && userChores[user.id].length"
+                                :data="userChores[user.id]"
+                                style="width: 100%">
+                                <el-table-column
+                                    prop="choreName"
+                                    label="Chore Name">
+                                </el-table-column>
+                                <el-table-column
+                                    prop="functionalSpaceType"
+                                    label="Functional Space">
+                                </el-table-column>
+                            </el-table>
+                            <div v-else class="no-chores">
+                                <i class="el-icon-info"></i>
+                                <span>No chores assigned</span>
+                            </div>
+                        </div>
+                    </el-card>
+                </el-col>
+            </el-row>
+        </div>
     </app-layout>
 </template>
 
@@ -25,78 +55,100 @@ export default {
     },
     data() {
         return {
-            tableData: []
+            tableData: [],
+            userChores: {},
+            loadingUsers: false
         }
     },
     methods: {
-       // 编辑任务的方法，跳转到编辑页面或处理编辑逻辑
-        editUser(user) {
-            // 可以将用户引导至编辑页面或者展示编辑弹窗
-            console.log('Edit user:', user);
-            // 如果需要跳转到编辑页面，可以使用 this.$router.push
-            this.$router.push({ name: 'EditUser', params: { id: user.id } });
-        },
-        // 删除任务的方法，发起 DELETE 请求
-        deleteUser(userId) {
-            this.$confirm('Are you sure you want to delete this user?', 'Warning', {
-                confirmButtonText: 'Yes',
-                cancelButtonText: 'No',
-                type: 'warning'
-            }).then(() => {
-                axios.delete(`http://localhost:8080/user/${userId}`)
-                    .then(() => {
-                        this.$message({
-                            type: 'success',
-                            message: 'User deleted successfully!'
-                        });
-                        // 更新数据，重新获取 chore 列表
-                        this.fetchUsers();
-                    })
-                    .catch(error => {
-                        this.$message({
-                            type: 'error',
-                            message: 'Failed to delete the user.'
-                        });
-                        console.error('Error deleting user:', error);
+        async fetchUsers() {
+            this.loadingUsers = true;
+            const spaceId = localStorage.getItem('spaceId');
+            if (!spaceId) {
+                this.loadingUsers = false;
+                return;
+            }
+            
+            try {
+                const response = await axios.get(`http://localhost:8080/space/${spaceId}`);
+                if (response.data && response.data.users) {
+                    this.tableData = response.data.users;
+                    this.tableData.forEach(user => {
+                        this.fetchUserChores(user.id);
                     });
-            }).catch(() => {
-                this.$message({
-                    type: 'info',
-                    message: 'Deletion canceled'
-                });
-            });
+                }
+            } catch (error) {
+                console.error('Error fetching space users:', error);
+                this.$message.error('Failed to fetch users');
+            } finally {
+                this.loadingUsers = false;
+            }
         },
-        // 获取 chore 列表的方法
-        fetchUsers() {
-            axios.get("http://localhost:8080/user")
-                .then((result) => {
-                    console.log(result.data.data);
-                    this.tableData = result.data.data;
+        fetchUserChores(userId) {
+            axios.get(`http://localhost:8080/chores/user/${userId}`)
+                .then((response) => {
+                    if (response.data.status === 'success') {
+                        this.$set(this.userChores, userId, response.data.data);
+                    }
                 })
                 .catch((error) => {
-                    console.error('Error fetching users:', error);
+                    console.error('Error fetching user chores:', error);
                 });
         }
-            
-
     },
     mounted() {
-        // axios.get("http://localhost:8080/chores").then((result) => {
-        //     console.log(result.data.data);
-        //     this.tableData = result.data.data;
-        // });
         this.fetchUsers();
     }
-    
 }
 </script>
 
-<style>
-.el-menu-item a {
-    text-decoration: none;
+<style scoped>
+.user-container {
+    padding: 20px;
 }
-/* Optional: if you want to remove the router-link completely and use the click handler */
-.el-menu-item {
-    cursor: pointer;
+.user-card {
+    margin-bottom: 20px;
+}
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.chores-list {
+    margin-top: 10px;
+}
+.no-chores {
+    color: #999;
+    text-align: center;
+    padding: 20px;
+}
+
+:deep(.el-table) {
+    font-size: 14px;
+}
+
+:deep(.el-table th) {
+    background-color: white;
+    color: #909399;
+    font-weight: normal;
+    padding: 8px;
+}
+
+:deep(.el-table td) {
+    padding: 8px;
+}
+
+:deep(.el-table::before) {
+    height: 0;
+}
+
+.member-chores {
+    margin-top: 15px;
+}
+
+.section-title {
+    margin-bottom: 15px;
+    color: #5e3a1a;
+    font-weight: bold;
 }
 </style>

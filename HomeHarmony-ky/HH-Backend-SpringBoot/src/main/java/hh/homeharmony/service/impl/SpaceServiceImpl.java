@@ -1,6 +1,7 @@
 package hh.homeharmony.service.impl;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,11 +27,11 @@ public class SpaceServiceImpl implements SpaceService {
   private UserMapper userMapper; // MyBatis mapper for User
 
   @Override
-  public Space getSpaceById(Integer id) {
-    Space space = spaceMapper.findSpaceById(id);
+  public Space getSpaceById(Integer spaceId) {
+    Space space = spaceMapper.findSpaceById(spaceId);
     if (space != null) {
-        space.setUsers(spaceMapper.findUsersBySpaceId(id));
-        //space.setFunctionalSpaces(spaceMapper.findFunctionalSpacesBySpaceId(id));
+        List<User> users = userMapper.findUsersBySpaceId(spaceId);
+        space.setUsers(users);
     }
     return space;
   }
@@ -84,23 +85,25 @@ public class SpaceServiceImpl implements SpaceService {
   @Override
   public void removeUserFromSpace(Integer spaceId, Integer userId) {
     Space space = spaceMapper.findSpaceById(spaceId);
+    User user = userMapper.findUserById(userId);
+    
     if (space == null) {
         throw new IllegalArgumentException("Space not found");
     }
     
-    space.setUsers(spaceMapper.findUsersBySpaceId(spaceId));
-    
-    User user = userMapper.findUserById(userId);
     if (user == null) {
         throw new IllegalArgumentException("User not found");
     }
-    
-    if (!space.getUsers().stream().anyMatch(u -> u.getId().equals(userId))) {
-        throw new IllegalStateException("User is not a member of this space");
+
+    Integer userSpaceId = user.getSpaceId();
+    if (userSpaceId == null) {
+        throw new IllegalStateException("User is not a member of any space");
     }
     
-    space.removeUser(user);
-    spaceMapper.updateSpace(space);
+    if (!userSpaceId.equals(spaceId)) {
+        throw new IllegalStateException("User belongs to different space: " + userSpaceId);
+    }
+    
     userMapper.updateUserSpace(userId, null);
   }
 }

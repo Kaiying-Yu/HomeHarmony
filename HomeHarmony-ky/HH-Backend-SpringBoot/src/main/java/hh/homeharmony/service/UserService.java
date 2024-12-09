@@ -15,5 +15,7 @@ public interface UserService {
   void deleteUser(Integer id);
 
   User login(User user);
+
+  void addPoints(Integer userId, Integer points);
 }
 

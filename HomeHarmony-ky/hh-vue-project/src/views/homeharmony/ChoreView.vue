@@ -7,7 +7,8 @@
             </div>
 
             <!-- Chores table -->
-            <el-table :data="sortedTableData" border>
+            <el-table :data="sortedTableData" border :default-sort="{prop: 'functionalSpaceType', order: 'ascending'}">
+                <el-table-column prop="functionalSpaceType" label="Functional Space Type" width="180" sortable></el-table-column>
                 <el-table-column prop="choreName" label="Chore Name" width="200"></el-table-column>
                 <el-table-column prop="points" label="Points" width="180"></el-table-column>
                 <el-table-column prop="dueDate" label="Due Date" width="180"></el-table-column>
@@ -20,33 +21,36 @@
                 </el-table-column>
                 <el-table-column label="Assigned To" width="180">
                     <template #default="scope">
-                        <div v-if="scope.row.assignedUser">
-                            {{ scope.row.assignedUser.username }}
-                            <el-button 
-                                type="text" 
-                                size="mini" 
-                                @click="handleChangeClick(scope.row)" 
-                                v-if="scope.row.choreStatus !== 'COMPLETED'">
-                                Change
-                            </el-button>
-                        </div>
-                        <el-select
-                            v-else
-                            v-model="scope.row.assignedUserId"
-                            placeholder="Assign user"
-                            :loading="loadingUsers"
-                            filterable
-                            @change="(value) => {
-                                assignUser(scope.row.id, value);
-                                scope.row.showSelect = false;
-                            }">
-                            <el-option
-                                v-for="user in cachedSpaceUsers"
-                                :key="user.id"
-                                :label="user.username"
-                                :value="user.id">
-                            </el-option>
-                        </el-select>
+                        <template v-if="scope.row.choreStatus === 'PENDING' || scope.row.showSelect">
+                            <el-select
+                                v-model="scope.row.assignedUserId"
+                                placeholder="Assign user"
+                                :loading="loadingUsers"
+                                filterable
+                                @change="(value) => {
+                                    assignUser(scope.row.id, value);
+                                    scope.row.showSelect = false;
+                                }">
+                                <el-option
+                                    v-for="user in cachedSpaceUsers"
+                                    :key="user.id"
+                                    :label="user.username"
+                                    :value="user.id">
+                                </el-option>
+                            </el-select>
+                        </template>
+                        <template v-else>
+                            <div>
+                                {{ scope.row.assignedUser ? scope.row.assignedUser.username : '' }}
+                                <el-button 
+                                    type="text"
+                                    size="mini" 
+                                    @click="handleChangeClick(scope.row)" 
+                                    v-if="scope.row.choreStatus === 'IN_PROGRESS'">
+                                    Change
+                                </el-button>
+                            </div>
+                        </template>
                     </template>
                 </el-table-column>
                 <el-table-column label="Complete" width="120">
@@ -183,7 +187,11 @@ export default {
             axios.get('http://localhost:8080/chores')
                 .then(response => {
                     if (response.data && response.data.status === 'success') {
-                        this.tableData = response.data.data;
+                        this.tableData = response.data.data.map(chore => ({
+                            ...chore,
+                            showSelect: false,
+                            functionalSpaceType: this.formatSpaceType(chore.functionalSpaceType)
+                        }));
                     } else {
                         this.$message.error('Failed to fetch chores: Invalid response format');
                     }
@@ -262,6 +270,13 @@ export default {
         async handleChangeClick(row) {
             await this.fetchSpaceUsers();  // Ensure users are fetched
             row.showSelect = true;  // Show the select dropdown
+        },
+        formatSpaceType(type) {
+            if (!type) return '';
+            return type.toLowerCase()
+                .split('_')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ');
         }
     },
     mounted() {
@@ -278,15 +293,21 @@ export default {
             }
         },
         sortedTableData() {
-            return [...this.tableData].sort((a, b) => {
-                if (a.choreStatus === 'COMPLETED' && b.choreStatus !== 'COMPLETED') {
-                    return 1;
-                }
-                if (a.choreStatus !== 'COMPLETED' && b.choreStatus === 'COMPLETED') {
-                    return -1;
-                }
-                return 0;
-            });
+            // First, separate completed and non-completed chores
+            const completedChores = this.tableData.filter(chore => chore.choreStatus === 'COMPLETED');
+            const activeChores = this.tableData.filter(chore => chore.choreStatus !== 'COMPLETED');
+
+            // Sort each group by functional space type
+            const sortBySpaceType = (a, b) => {
+                return a.functionalSpaceType.localeCompare(b.functionalSpaceType);
+            };
+
+            // Sort each group independently
+            const sortedActiveChores = [...activeChores].sort(sortBySpaceType);
+            const sortedCompletedChores = [...completedChores].sort(sortBySpaceType);
+
+            // Return active chores on top, completed chores at bottom
+            return [...sortedActiveChores, ...sortedCompletedChores];
         },
         cachedSpaceUsers() {
             return this.userCache || [];
