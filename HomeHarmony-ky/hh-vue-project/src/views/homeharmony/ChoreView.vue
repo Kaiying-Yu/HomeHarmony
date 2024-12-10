@@ -10,7 +10,7 @@
             <el-table :data="sortedTableData" border :default-sort="{prop: 'functionalSpaceType', order: 'ascending'}">
                 <el-table-column prop="functionalSpaceType" label="Functional Space Type" width="180" sortable></el-table-column>
                 <el-table-column prop="choreName" label="Chore Name" width="200"></el-table-column>
-                <el-table-column prop="points" label="Points" width="180"></el-table-column>
+                <el-table-column prop="points" label="Points" width="100"></el-table-column>
                 <el-table-column prop="dueDate" label="Due Date" width="180"></el-table-column>
                 <el-table-column prop="choreStatus" label="Status" width="120">
                     <template slot-scope="scope">
@@ -60,7 +60,7 @@
                             size="mini"
                             :disabled="scope.row.choreStatus === 'COMPLETED'"
                             @click="markAsCompleted(scope.row)">
-                            {{ scope.row.choreStatus === 'COMPLETED' ? 'Completed' : 'Mark Complete' }}
+                            {{ scope.row.choreStatus === 'COMPLETED' ? 'Completed' : 'Complete' }}
                         </el-button>
                     </template>
                 </el-table-column>
@@ -135,7 +135,8 @@ export default {
                 points: 0,
                 dueDate: '',
                 choreStatus: 'PENDING',
-                functionalSpaceType: ''
+                functionalSpaceType: '',
+                spaceId: null
             },
             loadingUsers: false,
             userCache: null,
@@ -217,8 +218,15 @@ export default {
             })
         },
         submitChore() {
+            const spaceId = localStorage.getItem('spaceId');
+            if (!spaceId) {
+                this.$message.warning('Please join a space first');
+                return;
+            }
+
             const formattedChore = {
                 ...this.choreForm,
+                spaceId: parseInt(spaceId),
                 dueDate: this.choreForm.dueDate ? this.choreForm.dueDate.replace(' ', 'T') + 'Z' : null,
                 functionalSpaceType: this.toEnumFormat(this.choreForm.functionalSpaceType)
             };
@@ -248,7 +256,8 @@ export default {
                 points: 0,
                 dueDate: '',
                 choreStatus: 'PENDING',
-                functionalSpaceType: ''
+                functionalSpaceType: '',
+                spaceId: null
             };
         },
         async fetchChores() {
@@ -270,8 +279,8 @@ export default {
                     return;
                 }
 
-                // If user belongs to space, fetch chores
-                const response = await axios.get('http://localhost:8080/chores');
+                // If user belongs to space, fetch chores with spaceId in URL
+                const response = await axios.get(`http://localhost:8080/chores/space/${spaceId}`);
                 if (response.data && response.data.status === 'success') {
                     this.tableData = response.data.data.map(chore => ({
                         ...chore,

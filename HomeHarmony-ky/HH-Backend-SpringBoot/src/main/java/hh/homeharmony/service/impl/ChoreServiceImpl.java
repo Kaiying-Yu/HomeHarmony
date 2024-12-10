@@ -23,12 +23,15 @@ public class ChoreServiceImpl implements ChoreService {
     private UserMapper userMapper;
 
     @Override
-    public List<Chore> getAllChores() {
-        return choreMapper.selectAll();
+    public List<Chore> getAllChores(Integer spaceId) {
+        return choreMapper.selectAllBySpaceId(spaceId);
     }
 
     @Override
     public Chore createChore(Chore chore) {
+        if (chore.getSpaceId() == null) {
+            throw new IllegalArgumentException("Space ID is required");
+        }
         chore.setCreateDate(LocalDateTime.now());
         chore.setStatus(ChoreStatus.PENDING);
         choreMapper.insert(chore);

@@ -18,6 +18,7 @@ public class Chore extends BaseEntity implements IChore {
     private LocalDateTime dueDate;
     private ChoreStatus status;
     private User assignedUser;
+    private Integer spaceId;
 
     public Chore() {
         this.status = ChoreStatus.PENDING;
@@ -94,5 +95,13 @@ public class Chore extends BaseEntity implements IChore {
                ", Assigned User: " + (assignedUser == null ? "None" : assignedUser.getUsername()) +
                ", Status: " + status + 
                ", Due Date: " + dueDate;
+    }
+
+    public Integer getSpaceId() {
+        return spaceId;
+    }
+
+    public void setSpaceId(Integer spaceId) {
+        this.spaceId = spaceId;
     }
 }

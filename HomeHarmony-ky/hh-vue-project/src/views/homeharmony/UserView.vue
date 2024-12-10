@@ -35,7 +35,7 @@
                                 </el-table-column>
                                 <el-table-column
                                     prop="functionalSpaceType"
-                                    label="Space Type">
+                                    label="Functional Space">
                                 </el-table-column>
                                 <el-table-column
                                     prop="points"

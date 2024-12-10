@@ -81,17 +81,15 @@ public class ChoreController {
      *
      * @return ResponseEntity containing a map with all chores or error details
      */
-    @GetMapping
-    public ResponseEntity<Map<String, Object>> getAllChores() {
+    @GetMapping("/space/{spaceId}")
+    public ResponseEntity<Map<String, Object>> getAllChores(@PathVariable Integer spaceId) {
         try {
-            List<Chore> chores = choreService.getAllChores();
-            // Create success response
+            List<Chore> chores = choreService.getAllChores(spaceId);
             Map<String, Object> response = new HashMap<>();
             response.put("status", "success");
             response.put("data", chores);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            // Create error response
             Map<String, Object> errorResponse = new HashMap<>();
             errorResponse.put("status", "error");
             errorResponse.put("message", e.getMessage());

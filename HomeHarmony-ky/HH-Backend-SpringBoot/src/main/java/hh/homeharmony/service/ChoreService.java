@@ -5,7 +5,7 @@ import java.util.List;
 import hh.homeharmony.model.Chore;
 
 public interface ChoreService {
-    List<Chore> getAllChores();
+    List<Chore> getAllChores(Integer spaceId);
     Chore createChore(Chore chore);
     Chore updateChore(Chore chore);
     void deleteChore(Integer id);

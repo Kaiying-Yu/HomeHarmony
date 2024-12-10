@@ -31,7 +31,8 @@ public interface ChoreMapper {
         @Result(property = "functionalSpaceType", column = "functional_space_type", 
                 javaType = FunctionalSpaceType.class),
         @Result(property = "assignedUser", column = "assigned_user_id", 
-                one = @One(select = "hh.homeharmony.mapper.UserMapper.findUserById"))
+                one = @One(select = "hh.homeharmony.mapper.UserMapper.findUserById")),
+        @Result(property = "spaceId", column = "space_id")
     })
     @Select("SELECT * FROM chores")
     List<Chore> selectAll();
@@ -40,8 +41,8 @@ public interface ChoreMapper {
     @Select("SELECT * FROM chores WHERE id = #{id}")
     Chore selectById(Integer id);
 
-    @Insert("INSERT INTO chores (chore_name, points, due_date, create_date, status, functional_space_type) " +
-           "VALUES (#{choreName}, #{points}, #{dueDate}, #{createDate}, #{status}, #{functionalSpaceType})")
+    @Insert("INSERT INTO chores (chore_name, points, due_date, create_date, status, functional_space_type, space_id) " +
+           "VALUES (#{choreName}, #{points}, #{dueDate}, #{createDate}, #{status}, #{functionalSpaceType}, #{spaceId})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insert(Chore chore);
 
@@ -57,4 +58,7 @@ public interface ChoreMapper {
 
     @Select("SELECT * FROM chores WHERE assigned_user_id = #{userId}")
     List<Chore> findChoresByUserId(@Param("userId") Integer userId);
+
+    @Select("SELECT * FROM chores WHERE space_id = #{spaceId}")
+    List<Chore> selectAllBySpaceId(@Param("spaceId") Integer spaceId);
 }
