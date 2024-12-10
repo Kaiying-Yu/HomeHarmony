@@ -14,7 +14,6 @@ public class Chore extends BaseEntity implements IChore {
     private FunctionalSpaceType functionalSpaceType;// Functional space type
     private Duration estimatedTime;// Estimated time to complete the chore
     private Integer points;
-    private LocalDateTime createDate;
     private LocalDateTime dueDate;
     private ChoreStatus status;
     private User assignedUser;
@@ -24,9 +23,8 @@ public class Chore extends BaseEntity implements IChore {
         this.status = ChoreStatus.PENDING;
     }
 
-    public Chore(String choreName, LocalDateTime createDate, LocalDateTime dueDate) {
+    public Chore(String choreName, LocalDateTime dueDate) {
         this.choreName = choreName;
-        this.createDate = createDate;
         this.dueDate = dueDate;
         this.status = ChoreStatus.PENDING;
     }

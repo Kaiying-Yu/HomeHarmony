@@ -118,8 +118,7 @@ export default {
                     username: username,
                     email: email,
                     assignedChores: []
-                }],
-                choreIds: []
+                }]
             };
 
             axios.post('http://localhost:8080/space', spaceRequest)

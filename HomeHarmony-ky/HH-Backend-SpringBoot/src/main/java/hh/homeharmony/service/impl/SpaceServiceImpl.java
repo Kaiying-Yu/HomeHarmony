@@ -49,8 +49,6 @@ public class SpaceServiceImpl implements SpaceService {
     }
     
     space.setUsers(new ArrayList<>());
-    //space.setFunctionalSpaces(new ArrayList<>());
-    space.setChoreIds(new ArrayList<>());
     
     spaceMapper.insertSpace(space);
     space.addUser(creator);

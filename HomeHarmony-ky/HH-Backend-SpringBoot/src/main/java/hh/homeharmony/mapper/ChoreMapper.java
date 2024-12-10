@@ -41,8 +41,8 @@ public interface ChoreMapper {
     @Select("SELECT * FROM chores WHERE id = #{id}")
     Chore selectById(Integer id);
 
-    @Insert("INSERT INTO chores (chore_name, points, due_date, create_date, status, functional_space_type, space_id) " +
-           "VALUES (#{choreName}, #{points}, #{dueDate}, #{createDate}, #{status}, #{functionalSpaceType}, #{spaceId})")
+    @Insert("INSERT INTO chores (chore_name, points, due_date, status, functional_space_type, space_id) " +
+           "VALUES (#{choreName}, #{points}, #{dueDate}, #{status}, #{functionalSpaceType}, #{spaceId})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insert(Chore chore);
 

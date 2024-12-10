@@ -1,6 +1,5 @@
 package hh.homeharmony.service.impl;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +31,6 @@ public class ChoreServiceImpl implements ChoreService {
         if (chore.getSpaceId() == null) {
             throw new IllegalArgumentException("Space ID is required");
         }
-        chore.setCreateDate(LocalDateTime.now());
         chore.setStatus(ChoreStatus.PENDING);
         choreMapper.insert(chore);
         return chore;
