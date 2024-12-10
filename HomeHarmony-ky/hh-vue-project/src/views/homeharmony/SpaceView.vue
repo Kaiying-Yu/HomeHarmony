@@ -50,17 +50,6 @@
                 <el-form-item label="Space Name">
                     <el-input v-model="newSpace.name" placeholder="Enter space name"></el-input>
                 </el-form-item>
-                
-                <el-form-item label="Default Spaces">
-                    <el-checkbox-group v-model="newSpace.functionalSpaces">
-                        <el-checkbox 
-                            v-for="space in availableFunctionalSpaces" 
-                            :key="space.id" 
-                            :label="space.id">
-                            {{ space.name }}
-                        </el-checkbox>
-                    </el-checkbox-group>
-                </el-form-item>
             </el-form>
             
             <template #footer>
@@ -102,10 +91,8 @@ export default {
             currentSpace: null,
             dialogVisible: false,
             newSpace: {
-                name: '',
-                functionalSpaces: []
+                name: ''
             },
-            availableFunctionalSpaces: [],
             joinDialogVisible: false,
             joinSpace: {
                 spaceId: ''
@@ -115,17 +102,6 @@ export default {
     methods: {
         createSpace() {
             this.dialogVisible = true;
-            this.fetchFunctionalSpaces();
-        },
-        fetchFunctionalSpaces() {
-            axios.get('http://localhost:8080/functionalSpace')
-                .then(response => {
-                    this.availableFunctionalSpaces = response.data;
-                })
-                .catch(error => {
-                    this.$message.error('Failed to fetch functional spaces');
-                    console.error('Error:', error);
-                });
         },
         submitNewSpace() {
             const userId = localStorage.getItem('userId');
@@ -134,9 +110,6 @@ export default {
             
             const spaceRequest = {
                 name: this.newSpace.name,
-                functionalSpaces: this.newSpace.functionalSpaces.map(id => ({
-                    id: id
-                })),
                 users: [{
                     id: parseInt(userId),
                     username: username,
@@ -151,7 +124,6 @@ export default {
                     this.$message.success('Space created successfully!');
                     this.dialogVisible = false;
                     this.newSpace.name = '';
-                    this.newSpace.functionalSpaces = [];
                     localStorage.setItem('spaceId', response.data.id);
                     this.fetchCurrentSpace();
                 })

@@ -86,8 +86,25 @@
                             v-model="choreForm.dueDate"
                             type="datetime"
                             placeholder="Select due date"
-                            value-format="yyyy-MM-dd HH:mm:ss">
+                            value-format="yyyy-MM-dd HH:mm:ss"
+                            :picker-options="{
+                                firstDayOfWeek: 1
+                            }"
+                            :lang="'en'"
+                        >
                         </el-date-picker>
+                    </el-form-item>
+                    <el-form-item label="Functional Space">
+                        <el-select v-model="choreForm.functionalSpaceType" placeholder="Select functional space">
+                            <el-option label="Kitchen" value="KITCHEN"></el-option>
+                            <el-option label="Bathroom" value="BATHROOM"></el-option>
+                            <el-option label="Living Room" value="LIVING_ROOM"></el-option>
+                            <el-option label="Bedroom" value="BEDROOM"></el-option>
+                            <el-option label="Dining Room" value="DINING_ROOM"></el-option>
+                            <el-option label="Home Office" value="HOME_OFFICE"></el-option>
+                            <el-option label="Garage" value="GARAGE"></el-option>
+                            <el-option label="Balcony" value="BALCONY"></el-option>
+                        </el-select>
                     </el-form-item>
                 </el-form>
                 <span slot="footer" class="dialog-footer">
@@ -117,7 +134,8 @@ export default {
                 choreName: '',
                 points: 0,
                 dueDate: '',
-                choreStatus: 'PENDING'
+                choreStatus: 'PENDING',
+                functionalSpaceType: ''
             },
             loadingUsers: false,
             userCache: null,
@@ -198,50 +216,75 @@ export default {
             })
         },
         submitChore() {
-            const url = this.isEdit 
-                ? `http://localhost:8080/chores/${this.choreForm.id}`
-                : 'http://localhost:8080/chores'
-            const method = this.isEdit ? 'put' : 'post'
+            const formattedChore = {
+                ...this.choreForm,
+                dueDate: this.choreForm.dueDate ? this.choreForm.dueDate.replace(' ', 'T') + 'Z' : null,
+                functionalSpaceType: this.toEnumFormat(this.choreForm.functionalSpaceType)
+            };
 
-            axios[method](url, this.choreForm)
+            const url = this.isEdit 
+                ? `http://localhost:8080/chores/${formattedChore.id}`
+                : 'http://localhost:8080/chores';
+            const method = this.isEdit ? 'put' : 'post';
+
+            axios[method](url, formattedChore)
                 .then(() => {
-                    this.$message.success(this.isEdit ? 'Chore updated successfully' : 'Chore created successfully')
-                    this.dialogVisible = false
-                    this.resetForm()
-                    this.fetchChores()
+                    this.$message.success(this.isEdit ? 'Chore updated successfully' : 'Chore created successfully');
+                    this.dialogVisible = false;
+                    this.resetForm();
+                    this.fetchChores();
                 })
                 .catch(error => {
-                    console.error('Error saving chore:', error)
-                    this.$message.error('Failed to save chore')
-                })
+                    console.error('Error saving chore:', error);
+                    this.$message.error('Failed to save chore');
+                });
         },
         resetForm() {
-            this.isEdit = false
+            this.isEdit = false;
             this.choreForm = {
                 id: null,
                 choreName: '',
                 points: 0,
                 dueDate: '',
-                choreStatus: 'PENDING'
-            }
+                choreStatus: 'PENDING',
+                functionalSpaceType: ''
+            };
         },
-        fetchChores() {
-            axios.get('http://localhost:8080/chores')
-                .then(response => {
-                    if (response.data && response.data.status === 'success') {
-                        this.tableData = response.data.data.map(chore => ({
-                            ...chore,
-                            showSelect: false,
-                            functionalSpaceType: this.formatSpaceType(chore.functionalSpaceType)
-                        }));
-                    } else {
-                        this.$message.error('Failed to fetch chores: Invalid response format');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching chores:', error);
-                    this.$message.error('Failed to fetch chores');
-                });
+        async fetchChores() {
+            const spaceId = localStorage.getItem('spaceId');
+            if (!spaceId) {
+                this.$message.warning('Please join a space first');
+                this.tableData = [];
+                return;
+            }
+
+            try {
+                // First verify if user belongs to the space
+                const spaceResponse = await axios.get(`http://localhost:8080/space/${spaceId}`);
+                const userId = localStorage.getItem('userId');
+                
+                if (!spaceResponse.data.users.some(user => user.id === parseInt(userId))) {
+                    this.$message.error('You do not have access to this space');
+                    this.tableData = [];
+                    return;
+                }
+
+                // If user belongs to space, fetch chores
+                const response = await axios.get('http://localhost:8080/chores');
+                if (response.data && response.data.status === 'success') {
+                    this.tableData = response.data.data.map(chore => ({
+                        ...chore,
+                        showSelect: false,
+                        functionalSpaceType: this.formatSpaceType(chore.functionalSpaceType)
+                    }));
+                } else {
+                    this.$message.error('Failed to fetch chores: Invalid response format');
+                }
+            } catch (error) {
+                console.error('Error fetching chores:', error);
+                this.$message.error('Failed to fetch chores');
+                this.tableData = [];
+            }
         },
         async fetchSpaceUsers() {
             // Don't fetch if we have recent data (cache for 5 minutes)
@@ -298,8 +341,15 @@ export default {
                         const updatedChore = this.tableData.find(c => c.id === chore.id);
                         if (updatedChore) {
                             updatedChore.choreStatus = 'COMPLETED';
+                            // Show celebration notification
+                            this.$notify({
+                                title: 'Congratulations! 🎉',
+                                message: `You've earned ${chore.points} points for completing "${chore.choreName}"!`,
+                                type: 'success',
+                                duration: 4000,
+                                position: 'top-right'
+                            });
                         }
-                        this.$message.success('Chore marked as completed');
                     } else {
                         this.$message.error('Failed to complete chore');
                     }
@@ -319,6 +369,10 @@ export default {
                 .split('_')
                 .map(word => word.charAt(0).toUpperCase() + word.slice(1))
                 .join(' ');
+        },
+        toEnumFormat(type) {
+            if (!type) return '';
+            return type.toUpperCase().replace(/ /g, '_');
         }
     },
     computed: {

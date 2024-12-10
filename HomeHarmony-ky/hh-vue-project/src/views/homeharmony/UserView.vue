@@ -27,7 +27,7 @@
                             
                             <el-table
                                 v-if="userChores[user.id] && userChores[user.id].length"
-                                :data="userChores[user.id]"
+                                :data="getSortedChores(userChores[user.id])"
                                 style="width: 100%">
                                 <el-table-column
                                     prop="choreName"
@@ -42,7 +42,11 @@
                                     label="Points"
                                     width="80">
                                     <template slot-scope="scope">
-                                        <el-tag size="mini" type="info">{{ scope.row.points }}</el-tag>
+                                        <el-tag 
+                                            size="mini" 
+                                            :type="scope.row.choreStatus === 'COMPLETED' ? 'success' : 'info'">
+                                            {{ scope.row.points }}
+                                        </el-tag>
                                     </template>
                                 </el-table-column>
                             </el-table>
@@ -117,6 +121,24 @@ export default {
             if (!this.tableData.length) return false;
             const maxPoints = Math.max(...this.tableData.map(u => u.points));
             return user.points === maxPoints && user.points > 0;
+        },
+        getSortedChores(chores) {
+            if (!chores) return [];
+            
+            // Separate completed and active chores
+            const completedChores = chores.filter(chore => chore.choreStatus === 'COMPLETED');
+            const activeChores = chores.filter(chore => chore.choreStatus !== 'COMPLETED');
+            
+            // Sort each group by functional space type
+            const sortBySpaceType = (a, b) => {
+                return a.functionalSpaceType.localeCompare(b.functionalSpaceType);
+            };
+            
+            // Sort and combine
+            return [
+                ...activeChores.sort(sortBySpaceType),
+                ...completedChores.sort(sortBySpaceType)
+            ];
         }
     },
     mounted() {
