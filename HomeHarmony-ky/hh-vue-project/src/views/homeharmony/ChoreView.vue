@@ -190,6 +190,7 @@ export default {
                 case 'PENDING': return 'warning'
                 case 'IN_PROGRESS': return 'primary'
                 case 'COMPLETED': return 'success'
+                case 'OVERDUE': return 'danger'
                 default: return 'info'
             }
         },

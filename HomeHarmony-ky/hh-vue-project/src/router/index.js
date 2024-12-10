@@ -21,8 +21,8 @@ const router = new VueRouter({
             meta: { requiresAuth: true }
         },
         {
-            path: '/chore',
-            name: 'chore',
+            path: '/chores',
+            name: 'Chores',
             component: () => import('../views/homeharmony/ChoreView.vue'),
             meta: { requiresAuth: true }
         },

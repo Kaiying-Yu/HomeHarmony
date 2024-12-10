@@ -15,7 +15,7 @@
                         <el-submenu index="1">
                             <template #title><i class="el-icon-message"></i>System Management</template>
                             <el-menu-item index="1-1" @click="$router.push('/space')">Spaces</el-menu-item>
-                            <el-menu-item index="1-2" @click="$router.push('/chore')">Chores</el-menu-item>
+                            <el-menu-item index="1-2" @click="$router.push('/chores')">Chores</el-menu-item>
                             <el-menu-item index="1-3" @click="$router.push('/user')">Users</el-menu-item>
                         </el-submenu>
                         <el-menu-item index="2" @click="handleLogout">

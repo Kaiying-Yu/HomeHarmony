@@ -13,7 +13,10 @@
             <!-- Space Header Card -->
             <el-card class="space-header">
                 <div class="space-title">
-                    <h2>{{ currentSpace ? currentSpace.name : 'No Space Joined' }}</h2>
+                    <h2>
+                        {{ currentSpace ? currentSpace.name : 'No Space Joined' }}
+                        <span class="space-id" v-if="currentSpace">(ID: {{ currentSpace.id }})</span>
+                    </h2>
                     <div v-if="currentSpace">
                         <el-button type="danger" @click="quitSpace">Quit Space</el-button>
                     </div>
@@ -359,5 +362,12 @@ export default {
     font-size: 12px;
     color: #909399;
     margin-top: 4px;
+}
+
+.space-id {
+    font-size: 14px;
+    color: #909399;
+    font-weight: normal;
+    margin-left: 8px;
 }
 </style> 
