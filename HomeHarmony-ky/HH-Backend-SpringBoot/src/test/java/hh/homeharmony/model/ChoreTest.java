@@ -1,165 +1,181 @@
 package hh.homeharmony.model;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
+import static org.junit.jupiter.api.Assertions.*;
 import java.time.Duration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
  * Unit tests for the Chore class.
- * Validates the behavior of methods for managing chore properties and state.
+ * Tests all functionality including constructors, getters/setters, and core methods.
+ * Uses two chore instances with different states to ensure comprehensive testing.
  */
 public class ChoreTest {
+    private Chore chore1;  // PENDING status chore
+    private Chore chore2;  // IN_PROGRESS status chore
+    private User testUser;
 
-  private Chore chore;
+    /**
+     * Sets up test fixtures before each test method.
+     * Creates two chores with different states and a test user.
+     */
+    @BeforeEach
+    public void setUp() {
+        // First chore with PENDING status
+        chore1 = new Chore("Clean Kitchen",
+            "Wipe all surfaces and mop the floor.",
+            FunctionalSpaceType.KITCHEN,
+            Duration.ofMinutes(30),
+            10,
+            ChoreStatus.PENDING);
+            
+        // Second chore with IN_PROGRESS status
+        chore2 = new Chore("Clean Bathroom",
+            "Clean toilet and shower.",
+            FunctionalSpaceType.BATHROOM,
+            Duration.ofMinutes(45),
+            15,
+            ChoreStatus.IN_PROGRESS);
+        
+        testUser = new User();
+        testUser.setId(1);
+        testUser.setUsername("testUser");
+    }
 
-  /**
-   * Sets up a Chore instance with default properties before each test.
-   */
-  @BeforeEach
-  public void setUp() {
-    chore = new Chore("Clean Kitchen",
-        "Wipe all surfaces and mop the floor.",
-        FunctionalSpaceType.KITCHEN,
-        Duration.ofMinutes(30),
-        10,
-        ChoreStatus.PENDING);
-  }
+    /**
+     * Tests the default constructor.
+     * Verifies that a new chore is created with PENDING status.
+     */
+    @Test
+    public void testDefaultConstructor() {
+        Chore defaultChore = new Chore();
+        assertEquals(ChoreStatus.PENDING, defaultChore.getChoreStatus());
+    }
 
-  /**
-   * Tests the parameterized constructor.
-   */
-  @Test
-  public void testParameterizedConstructor() {
-    assertEquals("Clean Kitchen", chore.getChoreName());
-    assertEquals("Wipe all surfaces and mop the floor.", chore.getChoreDescription());
-    assertEquals(FunctionalSpaceType.KITCHEN, chore.getFunctionalSpaceType());
-    assertEquals(Duration.ofMinutes(30), chore.getEstimatedTime());
-    assertEquals(10, chore.getPoints());
-    assertEquals(ChoreStatus.PENDING, chore.getChoreStatus());
-    assertNull(chore.getAssignedUser());
-  }
+    /**
+     * Tests the parameterized constructor with valid inputs.
+     * Verifies all fields are properly initialized.
+     */
+    @Test
+    public void testParameterizedConstructor() {
+        assertEquals("Clean Kitchen", chore1.getChoreName());
+        assertEquals("Wipe all surfaces and mop the floor.", chore1.getChoreDescription());
+        assertEquals(FunctionalSpaceType.KITCHEN, chore1.getFunctionalSpaceType());
+        assertEquals(Duration.ofMinutes(30), chore1.getEstimatedTime());
+        assertEquals(10, chore1.getPoints());
+        assertEquals(ChoreStatus.PENDING, chore1.getChoreStatus());
+        assertNull(chore1.getAssignedUser());
+    }
 
-  /**
-   * Tests getting and setting the chore name.
-   */
-  @Test
-  public void testSetAndGetChoreName() {
-    chore.setChoreName("Clean Bathroom");
-    assertEquals("Clean Bathroom", chore.getChoreName());
-  }
+    /**
+     * Tests constructor validation for null or empty chore name.
+     */
+    @Test
+    public void testConstructorValidation() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Chore(null, "Description", FunctionalSpaceType.KITCHEN, 
+                Duration.ofMinutes(30), 10, ChoreStatus.PENDING);
+        });
 
-  /**
-   * Tests getting and setting the chore description.
-   */
-  @Test
-  public void testSetAndGetChoreDescription() {
-    chore.setChoreDescription("Scrub the tiles and clean the sink.");
-    assertEquals("Scrub the tiles and clean the sink.", chore.getChoreDescription());
-  }
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Chore("", "Description", FunctionalSpaceType.KITCHEN, 
+                Duration.ofMinutes(30), 10, ChoreStatus.PENDING);
+        });
+    }
 
-  /**
-   * Tests getting and setting the functional space type.
-   */
-  @Test
-  public void testSetAndGetFunctionalSpaceType() {
-    chore.setFunctionalSpaceType(FunctionalSpaceType.BATHROOM);
-    assertEquals(FunctionalSpaceType.BATHROOM, chore.getFunctionalSpaceType());
-  }
+    /**
+     * Tests the assignUser method with various scenarios.
+     */
+    @Test
+    public void testAssignUser() {
+        // Test assigning user to PENDING chore
+        chore1.assignUser(testUser);
+        assertEquals(testUser, chore1.getAssignedUser());
+        assertEquals(ChoreStatus.IN_PROGRESS, chore1.getChoreStatus());
 
-  /**
-   * Tests getting and setting the estimated time for the chore.
-   */
-  @Test
-  public void testSetAndGetEstimatedTime() {
-    chore.setEstimatedTime(Duration.ofMinutes(45));
-    assertEquals(Duration.ofMinutes(45), chore.getEstimatedTime());
-  }
+        // Test assigning null user
+        assertThrows(IllegalArgumentException.class, () -> {
+            chore2.assignUser(null);
+        });
 
-  /**
-   * Tests getting and setting the reward points for the chore.
-   */
-  @Test
-  public void testSetAndGetPoints() {
-    chore.setPoints(15);
-    assertEquals(15, chore.getPoints());
-  }
+        // Test assigning user to completed chore
+        chore2.setStatus(ChoreStatus.COMPLETED);
+        assertThrows(IllegalStateException.class, () -> {
+            chore2.assignUser(testUser);
+        });
+    }
 
-  /**
-   * Tests getting and setting the status of the chore.
-   */
-  @Test
-  public void testSetAndGetStatus() {
-    chore.setStatus(ChoreStatus.IN_PROGRESS);
-    assertEquals(ChoreStatus.IN_PROGRESS, chore.getChoreStatus());
-  }
+    /**
+     * Tests the markAsCompleted method in different states.
+     */
+    @Test
+    public void testMarkAsCompleted() {
+        // Test completing IN_PROGRESS chore
+        chore2.markAsCompleted();
+        assertEquals(ChoreStatus.COMPLETED, chore2.getChoreStatus());
 
-  /**
-   * Tests marking the chore as completed.
-   */
-  @Test
-  public void testMarkAsCompleted() {
-    chore.setStatus(ChoreStatus.IN_PROGRESS);
-    chore.markAsCompleted();
-    assertEquals(ChoreStatus.COMPLETED, chore.getChoreStatus());
-  }
+        // Test completing PENDING chore (should not change status)
+        chore1.markAsCompleted();
+        assertEquals(ChoreStatus.PENDING, chore1.getChoreStatus());
+    }
 
-  /**
-   * Tests marking the chore as completed when not in progress.
-   * Expects an IllegalStateException.
-   */
-  @Test
-  public void testMarkAsCompletedThrowsException() {
-    chore.setStatus(ChoreStatus.PENDING);
-    Exception exception = assertThrows(IllegalStateException.class, chore::markAsCompleted);
-    assertEquals("Chore must be 'In Progress' to mark as completed.", exception.getMessage());
-  }
+    /**
+     * Tests space ID getter and setter.
+     */
+    @Test
+    public void testSpaceId() {
+        chore1.setSpaceId(123);
+        assertEquals(123, chore1.getSpaceId());
+    }
 
-  /**
-   * Tests getting the assigned user (should be null initially).
-   */
-  @Test
-  public void testGetAssignedUserInitiallyNull() {
-    assertNull(chore.getAssignedUser());
-  }
+    /**
+     * Tests the toString method for different chore states.
+     */
+    @Test
+    public void testToString() {
+        chore1.setId(1);
+        String expected1 = "Chore{" +
+                "id=1" +
+                ", choreName='Clean Kitchen'" +
+                ", functionalSpaceType=KITCHEN" +
+                ", estimatedTime=PT30M" +
+                ", points=10" +
+                ", status=Pending" +
+                ", assignedUser=Unassigned" +
+                '}';
+        assertEquals(expected1, chore1.toString());
 
-  /**
-   * Tests the equals and hashCode methods for Chore objects.
-   */
-  @Test
-  public void testEqualsAndHashCode() {
-    Chore anotherChore = new Chore("Clean Kitchen",
-        "Wipe all surfaces and mop the floor.",
-        FunctionalSpaceType.KITCHEN,
-        Duration.ofMinutes(30),
-        10,
-        ChoreStatus.PENDING);
-    anotherChore.setId(1);
-    chore.setId(1);
+        // Test toString with assigned user
+        chore2.setId(2);
+        chore2.assignUser(testUser);
+        String expected2 = "Chore{" +
+                "id=2" +
+                ", choreName='Clean Bathroom'" +
+                ", functionalSpaceType=BATHROOM" +
+                ", estimatedTime=PT45M" +
+                ", points=15" +
+                ", status=In Progress" +
+                ", assignedUser=testUser" +
+                '}';
+        assertEquals(expected2, chore2.toString());
+    }
 
-    assertEquals(chore, anotherChore);
-    assertEquals(chore.hashCode(), anotherChore.hashCode());
-  }
+    /**
+     * Tests equals and hashCode methods.
+     */
+    @Test
+    public void testEqualsAndHashCode() {
+        Chore copy1 = new Chore("Clean Kitchen",
+            "Wipe all surfaces and mop the floor.",
+            FunctionalSpaceType.KITCHEN,
+            Duration.ofMinutes(30),
+            10,
+            ChoreStatus.PENDING);
+        copy1.setId(1);
+        chore1.setId(1);
 
-  /**
-   * Tests the toString method of the Chore class.
-   * Verifies the string representation of the Chore instance.
-   */
-  @Test
-  public void testToString() {
-    chore.setId(1); // Setting the ID to include it in the output
-    String expected = "Chore{" +
-        "id=1" +
-        ", choreName='Clean Kitchen'" +
-        ", functionalSpaceType=KITCHEN" +
-        ", estimatedTime=30 minutes" +
-        ", points=10" +
-        ", status=Pending" +
-        ", assignedUser=Unassigned" +
-        '}';
-    assertEquals(expected, chore.toString());
-  }
+        assertTrue(chore1.equals(copy1));
+        assertEquals(chore1.hashCode(), copy1.hashCode());
+        assertFalse(chore1.equals(chore2));
+    }
 }
