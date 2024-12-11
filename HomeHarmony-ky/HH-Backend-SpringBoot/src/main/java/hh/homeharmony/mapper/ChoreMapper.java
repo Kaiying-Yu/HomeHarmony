@@ -36,7 +36,6 @@ public interface ChoreMapper {
         @Result(property = "choreName", column = "chore_name"),
         @Result(property = "points", column = "points"),
         @Result(property = "createDate", column = "create_date"),
-        @Result(property = "dueDate", column = "due_date"),
         @Result(property = "status", column = "status", javaType = ChoreStatus.class),
         @Result(property = "functionalSpaceType", column = "functional_space_type",
                 javaType = FunctionalSpaceType.class),
@@ -64,8 +63,8 @@ public interface ChoreMapper {
      *
      * @param chore The chore object to insert
      */
-    @Insert("INSERT INTO chores (chore_name, points, due_date, status, functional_space_type, space_id) " +
-           "VALUES (#{choreName}, #{points}, #{dueDate}, #{status}, #{functionalSpaceType}, #{spaceId})")
+    @Insert("INSERT INTO chores (chore_name, points, status, functional_space_type, space_id) " +
+           "VALUES (#{choreName}, #{points}, #{status}, #{functionalSpaceType}, #{spaceId})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insert(Chore chore);
 
@@ -76,7 +75,7 @@ public interface ChoreMapper {
      * @param chore The chore object containing updated values
      */
     @Update("UPDATE chores SET chore_name = #{choreName}, points = #{points}, " +
-            "due_date = #{dueDate}, status = #{status}, " +
+            "status = #{status}, " +
             "functional_space_type = #{functionalSpaceType}, " +
             "assigned_user_id = #{assignedUser.id} " +
             "WHERE id = #{id}")

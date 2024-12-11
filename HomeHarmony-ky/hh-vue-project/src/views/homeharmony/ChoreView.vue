@@ -11,7 +11,6 @@
                 <el-table-column prop="functionalSpaceType" label="Functional Space Type" width="180" sortable></el-table-column>
                 <el-table-column prop="choreName" label="Chore Name" width="200"></el-table-column>
                 <el-table-column prop="points" label="Points" width="100"></el-table-column>
-                <el-table-column prop="dueDate" label="Due Date" width="180"></el-table-column>
                 <el-table-column prop="choreStatus" label="Status" width="120">
                     <template slot-scope="scope">
                         <el-tag :type="getStatusType(scope.row.choreStatus)">
@@ -81,19 +80,6 @@
                     <el-form-item label="Points">
                         <el-input-number v-model="choreForm.points" :min="0"></el-input-number>
                     </el-form-item>
-                    <el-form-item label="Due Date">
-                        <el-date-picker
-                            v-model="choreForm.dueDate"
-                            type="datetime"
-                            placeholder="Select due date"
-                            value-format="yyyy-MM-dd HH:mm:ss"
-                            :picker-options="{
-                                firstDayOfWeek: 1
-                            }"
-                            :lang="'en'"
-                        >
-                        </el-date-picker>
-                    </el-form-item>
                     <el-form-item label="Functional Space">
                         <el-select v-model="choreForm.functionalSpaceType" placeholder="Select functional space">
                             <el-option label="Kitchen" value="KITCHEN"></el-option>
@@ -132,10 +118,11 @@ export default {
             choreForm: {
                 id: null,
                 choreName: '',
+                description: '',
+                functionalSpaceType: '',
                 points: 0,
                 dueDate: '',
                 choreStatus: 'PENDING',
-                functionalSpaceType: '',
                 spaceId: null
             },
             loadingUsers: false,
@@ -383,6 +370,10 @@ export default {
         toEnumFormat(type) {
             if (!type) return '';
             return type.toUpperCase().replace(/ /g, '_');
+        },
+        formatDate(dateString) {
+            if (!dateString) return 'No due date';
+            return new Date(dateString).toLocaleString();
         }
     },
     computed: {

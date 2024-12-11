@@ -1,7 +1,6 @@
 package hh.homeharmony.model;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
 
 /**
  * Represents a chore entity in the system.
@@ -15,7 +14,6 @@ public class Chore extends BaseEntity implements IChore {
     private FunctionalSpaceType functionalSpaceType; // Type of room/area where the chore is performed
     private Duration estimatedTime;              // Expected time to complete the chore
     private Integer points;                      // Points awarded for completing the chore
-    private LocalDateTime dueDate;               // Deadline for completing the chore
     private ChoreStatus status;                  // Current state of the chore (PENDING, IN_PROGRESS, etc.)
     private User assignedUser;                   // User assigned to complete the chore
     private Integer spaceId;                     // ID of the space this chore belongs to
