@@ -272,7 +272,8 @@ export default {
                     this.tableData = response.data.data.map(chore => ({
                         ...chore,
                         showSelect: false,
-                        functionalSpaceType: this.formatSpaceType(chore.functionalSpaceType)
+                        functionalSpaceType: this.formatSpaceType(chore.functionalSpaceType),
+                        assignedUser: chore.assignedUser
                     }));
                 } else {
                     this.$message.error('Failed to fetch chores: Invalid response format');
