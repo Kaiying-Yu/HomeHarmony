@@ -3,14 +3,11 @@ package hh.homeharmony.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.EqualsAndHashCode;
-
 /**
  * Represents a Space entity in the system.
  * Spaces are areas that can have various functional spaces and chores assigned to them,
  * and can be occupied by multiple members.
  */
-@EqualsAndHashCode(callSuper = true)
 public class Space extends BaseEntity implements ISpace {
     private String name;
     private List<User> users; // List of Users associated with the Space
@@ -30,7 +27,7 @@ public class Space extends BaseEntity implements ISpace {
      * @param name the name of the space
      * @throws IllegalArgumentException if name is null or empty
      */
-    public Space(String name) {
+    public Space(String name) throws IllegalArgumentException {
         if (name == null || name.trim().isEmpty()) {
             throw new IllegalArgumentException("Space name cannot be null or empty");
         }
@@ -43,6 +40,7 @@ public class Space extends BaseEntity implements ISpace {
      *
      * @return the space name
      */
+    @Override
     public String getName() {
         return name;
     }
@@ -53,7 +51,8 @@ public class Space extends BaseEntity implements ISpace {
      * @param name the name to set
      * @throws IllegalArgumentException if name is null or empty
      */
-    public void setName(String name) {
+    @Override
+    public void setName(String name) throws IllegalArgumentException {
         if (name == null || name.trim().isEmpty()) {
             throw new IllegalArgumentException("Space name cannot be null or empty");
         }
@@ -65,6 +64,7 @@ public class Space extends BaseEntity implements ISpace {
      *
      * @return list of users, may be empty but never null
      */
+    @Override
     public List<User> getUsers() {
         if (users == null) {
             users = new ArrayList<>();
@@ -81,7 +81,16 @@ public class Space extends BaseEntity implements ISpace {
         this.users = users != null ? users : new ArrayList<>();
     }
 
-    // Implementation of ISpace methods remains the same
+    /**
+     * Adds a user to the space.
+     * This method implements the ISpace interface method for adding users.
+     * If the users list is null, it initializes a new ArrayList.
+     * Users can only be added once to a space.
+     * 
+     * @param user The user to add to the space
+     * @throws IllegalArgumentException if the user parameter is null
+     * @throws IllegalStateException if the user is already a member of this space
+     */
     @Override
     public void addUser(User user) throws IllegalArgumentException, IllegalStateException {
         if (user == null) {
@@ -97,6 +106,16 @@ public class Space extends BaseEntity implements ISpace {
         }
     }
 
+    /**
+     * Removes a user from the space.
+     * This method implements the ISpace interface method for removing users.
+     * The user must be a current member of the space to be removed.
+     * If the users list is null or the user is not found, throws an exception.
+     *
+     * @param user The user to remove from the space
+     * @throws IllegalArgumentException if the user parameter is null
+     * @throws IllegalStateException if the user is not a member of this space
+     */
     @Override
     public void removeUser(User user) throws IllegalArgumentException, IllegalStateException {
         if (user == null) {

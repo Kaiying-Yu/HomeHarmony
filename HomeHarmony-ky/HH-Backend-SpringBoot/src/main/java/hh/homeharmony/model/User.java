@@ -1,25 +1,27 @@
 package hh.homeharmony.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import java.io.Serializable;
 
 /**
  * Represents a User in the system.
  * Users can be assigned chores and can belong to multiple spaces.
  */
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class User extends BaseEntity {
+public class User extends BaseEntity implements IUser {
   private String username;
   private String email;
   private String password;
   private Integer points;
   private Integer spaceId;
 
+  /**
+   * Default constructor.
+   */
   public User() {}
 
+  /**
+   * Parameterized constructor.
+   * Creates a user with the specified username, email, password and points.
+   */
   public User(String username, String email, String password, Integer points) {
     this.username = username;
     this.email = email;
@@ -32,6 +34,7 @@ public class User extends BaseEntity {
    *
    * @return the user's name
    */
+  @Override
   public String getUsername() {
     return username;
   }
@@ -41,6 +44,7 @@ public class User extends BaseEntity {
    *
    * @param username the user's name
    */
+  @Override
   public void setUsername(String username) {
     this.username = username;
   }
@@ -50,6 +54,7 @@ public class User extends BaseEntity {
    *
    * @return the user's email
    */
+  @Override
   public String getEmail() {
     return email;
   }
@@ -59,6 +64,7 @@ public class User extends BaseEntity {
    *
    * @param email the user's email
    */
+  @Override
   public void setEmail(String email) {
     this.email = email;
   }
@@ -68,6 +74,7 @@ public class User extends BaseEntity {
    *
    * @return the user's password
    */
+  @Override
   public String getPassword() {
     return password;
   }
@@ -77,6 +84,7 @@ public class User extends BaseEntity {
    *
    * @param password the user's password
    */
+  @Override
   public void setPassword(String password) {
     this.password = password;
   }
@@ -86,6 +94,7 @@ public class User extends BaseEntity {
    *
    * @return the user's points
    */
+  @Override
   public Integer getPoints() {
     return points;
   }
@@ -95,6 +104,7 @@ public class User extends BaseEntity {
    *
    * @param points set for the user
    */
+  @Override
   public void setPoints(Integer points) {
     this.points = points;
   }
@@ -104,30 +114,30 @@ public class User extends BaseEntity {
    *
    * @return the spaceId the user belongs to
    */
+  @Override
   public Integer getSpaceId() {
     return spaceId;
   }
 
   /**
-   * Updates the user's details.
+   * Sets the user's spaceId
    *
-   * @param username     the updated username of the user
-   * @param email    the updated email of the user
-   * @param password the updated password of the user
+   * @param spaceId set for the user
    */
-  public void updateDetails(String username, String email, String password) {
-    this.username = username;
-    this.email = email;
-    this.password = password;
+  @Override
+  public void setSpaceId(Integer spaceId) {
+    this.spaceId = spaceId;
   }
 
   @Override
   public String toString() {
     return "User{" +
         "id=" + getId() + // getId() is inherited from BaseEntity
-        ", name='" + username + '\'' +
+        ", username='" + username + '\'' +
         ", email='" + email + '\'' +
         ", password='" + password + '\'' +
+        ", points=" + points +
+        ", spaceId=" + (spaceId != null ? spaceId : "Not in space") +
         '}';
   }
 }
