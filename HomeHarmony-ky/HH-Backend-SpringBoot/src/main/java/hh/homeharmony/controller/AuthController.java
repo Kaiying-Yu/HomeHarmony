@@ -39,14 +39,11 @@ public class AuthController {
         log.info("Login attempt for user: {}", user.getUsername());
         
         // Attempt to authenticate the user through UserService
-        User authenticatedUser = userService.login(user);
-        
-        if (authenticatedUser != null) {
-            // Login successful - return user details
+        try {
+            User authenticatedUser = userService.login(user);
             log.info("Login successful for user: {}", user.getUsername());
             return ResponseEntity.ok(authenticatedUser);
-        } else {
-            // Login failed - return error message
+        } catch (IllegalArgumentException e) {
             log.warn("Login failed for user: {}", user.getUsername());
             return ResponseEntity.status(401).body("Invalid credentials");
         }

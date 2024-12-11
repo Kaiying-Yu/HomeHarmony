@@ -39,6 +39,7 @@ public class UserController {
      * @return ResponseEntity containing either:
      *         - 200 OK with user details and success status
      *         - 500 Internal Server Error with error message if retrieval fails
+     * @throws IllegalArgumentException if the user is not found
      */
     @GetMapping("/{id}")
     public ResponseEntity<Map<String, Object>> getUserById(@PathVariable Integer id) {
@@ -56,8 +57,7 @@ public class UserController {
                 response.put("spaceId", user.getSpaceId());
             }
             return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            // Handle any errors and return appropriate error response
+        } catch (IllegalArgumentException e) {
             Map<String, Object> errorResponse = new HashMap<>();
             errorResponse.put("status", "error");
             errorResponse.put("message", e.getMessage());
@@ -88,37 +88,37 @@ public class UserController {
      * @return ResponseEntity containing either:
      *         - 200 OK with the updated user if successful
      *         - 404 Not Found if no user exists with the given ID
+     * @throws IllegalArgumentException if the user is not found or if the user data is invalid
      */
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody User user) {
-        // Check if user exists
+    try {
         User existingUser = userService.getUserById(id);
-        if (existingUser != null) {
-            // Set the ID to ensure we're updating the correct user
-            user.setId(id);
-            userService.updateUser(user);
-            return ResponseEntity.ok(user);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        user.setId(id); // Ensure we're updating the correct user
+        userService.updateUser(user);
+        return ResponseEntity.ok(user);
+    } catch (IllegalArgumentException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
+}
 
-  /**
-   * Deletes a user from the system by their ID.
-   *
-   * @param id The unique identifier of the user to delete
-   * @return ResponseEntity containing either:
-   *         - 200 OK with no content if deletion is successful
-   *         - 404 Not Found if no user exists with the given ID
-   */
+    /**
+     * Deletes a user from the system by their ID.
+     *
+     * @param id The unique identifier of the user to delete
+     * @return ResponseEntity containing either:
+     *         - 200 OK with no content if deletion is successful
+     *         - 404 Not Found if no user exists with the given ID
+     * @throws IllegalArgumentException if the user is not found
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
-        User existingUser = userService.getUserById(id);
-        if (existingUser != null) {
+        try {
+            User existingUser = userService.getUserById(id);
             userService.deleteUser(id);
             return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.notFound().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 }
