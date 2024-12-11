@@ -2,7 +2,6 @@ package hh.homeharmony.mapper;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -13,27 +12,49 @@ import hh.homeharmony.model.Space;
 import hh.homeharmony.model.User;
 
 /**
- * Mapper for the Space entity.
- * Provides SQL statements for CRUD operations on Spaces within the database.
- * Utilizes MyBatis annotations to define SQL queries and mappings.
- *
- * @author hh
+ * Mapper interface for Space entity.
+ * Provides SQL operations for managing spaces in the database.
+ * Uses MyBatis annotations for SQL mapping.
+ * Works in conjunction with SpaceService for business logic handling.
  */
 @Mapper
 public interface SpaceMapper {
-  @Select("SELECT * FROM spaces WHERE id = #{id}")
-  Space findSpaceById(Integer id); // Retrieves a Space by its ID
+    /**
+     * Retrieves a space by its ID.
+     * Used by SpaceService to get space details and associated users.
+     *
+     * @param id The unique identifier of the space
+     * @return The space with the specified ID, or null if not found
+     */
+    @Select("SELECT * FROM spaces WHERE id = #{id}")
+    Space findSpaceById(Integer id);
 
-  @Insert("INSERT INTO spaces (name) VALUES (#{name})")
-  @Options(useGeneratedKeys = true, keyProperty = "id")
-  void insertSpace(Space space); // Inserts a new Space into the database
+    /**
+     * Creates a new space in the database.
+     * Uses generated keys to populate the space's ID after insertion.
+     *
+     * @param space The space object to insert, containing the space name
+     */
+    @Insert("INSERT INTO spaces (name) VALUES (#{name})")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    void insertSpace(Space space);
 
-  @Update("UPDATE spaces SET name = #{name} WHERE id = #{id}")
-  void updateSpace(Space space); // Updates an existing Space
+    /**
+     * Updates an existing space's information.
+     * Currently only updates the space name.
+     *
+     * @param space The space object containing updated values
+     */
+    @Update("UPDATE spaces SET name = #{name} WHERE id = #{id}")
+    void updateSpace(Space space);
 
-  @Delete("DELETE FROM spaces WHERE id = #{id}")
-  void deleteSpace(Integer id); // Deletes a Space by ID
-
-  @Select("SELECT * FROM users WHERE space_id = #{spaceId}")
-  List<User> findUsersBySpaceId(Integer spaceId);
+    /**
+     * Finds all users associated with a specific space.
+     * Used by SpaceService to populate space members list.
+     *
+     * @param spaceId The ID of the space whose users to retrieve
+     * @return List of users belonging to the specified space
+     */
+    @Select("SELECT * FROM users WHERE space_id = #{spaceId}")
+    List<User> findUsersBySpaceId(Integer spaceId);
 }

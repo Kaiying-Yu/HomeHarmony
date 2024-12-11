@@ -39,7 +39,7 @@ public class ChoreTest {
     assertEquals(FunctionalSpaceType.KITCHEN, chore.getFunctionalSpaceType());
     assertEquals(Duration.ofMinutes(30), chore.getEstimatedTime());
     assertEquals(10, chore.getPoints());
-    assertEquals(ChoreStatus.PENDING, chore.getStatus());
+    assertEquals(ChoreStatus.PENDING, chore.getChoreStatus());
     assertNull(chore.getAssignedUser());
   }
 
@@ -94,7 +94,7 @@ public class ChoreTest {
   @Test
   public void testSetAndGetStatus() {
     chore.setStatus(ChoreStatus.IN_PROGRESS);
-    assertEquals(ChoreStatus.IN_PROGRESS, chore.getStatus());
+    assertEquals(ChoreStatus.IN_PROGRESS, chore.getChoreStatus());
   }
 
   /**
@@ -104,7 +104,7 @@ public class ChoreTest {
   public void testMarkAsCompleted() {
     chore.setStatus(ChoreStatus.IN_PROGRESS);
     chore.markAsCompleted();
-    assertEquals(ChoreStatus.COMPLETED, chore.getStatus());
+    assertEquals(ChoreStatus.COMPLETED, chore.getChoreStatus());
   }
 
   /**

@@ -63,8 +63,7 @@ public class ChoreServiceImpl implements ChoreService {
             throw new IllegalArgumentException("User not found");
         }
 
-        chore.setAssignedUser(user);
-        chore.setStatus(ChoreStatus.IN_PROGRESS);
+        chore.assignUser(user);
         choreMapper.update(chore);
     }
 
