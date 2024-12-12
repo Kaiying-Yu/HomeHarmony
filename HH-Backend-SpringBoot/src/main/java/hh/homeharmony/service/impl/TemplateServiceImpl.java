@@ -1,19 +1,21 @@
 package hh.homeharmony.service.impl;
 
-import hh.homeharmony.model.FunctionalSpaceType;
-import hh.homeharmony.service.CreateChoreService;
-import hh.homeharmony.service.templates.DefaultChoreTemplate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.stereotype.Service;
+
+import hh.homeharmony.model.FunctionalSpaceType;
+import hh.homeharmony.service.TemplateService;
+import hh.homeharmony.service.templates.DefaultChoreTemplate;
 
 /**
  * Implementation of the CreateChoreService interface.
  * Handles the creation of default chores based on functional space types.
  */
 @Service
-public class CreateChoreServiceImpl implements CreateChoreService {
+public class TemplateServiceImpl implements TemplateService {
 
   private final Map<FunctionalSpaceType, DefaultChoreTemplate> templateMap;
 
@@ -23,7 +25,7 @@ public class CreateChoreServiceImpl implements CreateChoreService {
    *
    * @param templates A list of all available DefaultChoreTemplate beans.
    */
-  public CreateChoreServiceImpl(List<DefaultChoreTemplate> templates) {
+  public TemplateServiceImpl(List<DefaultChoreTemplate> templates) {
     this.templateMap = new HashMap<>();
     for (DefaultChoreTemplate template : templates) {
       this.templateMap.put(template.getFunctionalSpaceType(), template);

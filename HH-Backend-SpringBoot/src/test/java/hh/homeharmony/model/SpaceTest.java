@@ -1,8 +1,13 @@
 package hh.homeharmony.model;
 
-import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -51,10 +56,12 @@ public class SpaceTest {
         assertTrue(space.getUsers().isEmpty());
 
         // Test null name
-        assertThrows(IllegalArgumentException.class, () -> new Space(null));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new Space(null));
+        assertEquals("Name cannot be null or empty", exception.getMessage());
         
         // Test empty name
-        assertThrows(IllegalArgumentException.class, () -> new Space("  "));
+        exception = assertThrows(IllegalArgumentException.class, () -> new Space("  "));
+        assertEquals("Name cannot be null or empty", exception.getMessage());
     }
 
     /**
@@ -66,10 +73,12 @@ public class SpaceTest {
         assertEquals("New Space Name", space.getName());
 
         // Test null name
-        assertThrows(IllegalArgumentException.class, () -> space.setName(null));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> space.setName(null));
+        assertEquals("Name cannot be null or empty", exception.getMessage());
         
         // Test empty name
-        assertThrows(IllegalArgumentException.class, () -> space.setName(""));
+        exception = assertThrows(IllegalArgumentException.class, () -> space.setName(""));
+        assertEquals("Name cannot be null or empty", exception.getMessage());
     }
 
     /**
@@ -107,10 +116,12 @@ public class SpaceTest {
         assertEquals(2, space.getUsers().size());
 
         // Test adding null user
-        assertThrows(IllegalArgumentException.class, () -> space.addUser(null));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> space.addUser(null));
+        assertEquals("User cannot be null", exception.getMessage());
 
         // Test adding duplicate user
-        assertThrows(IllegalStateException.class, () -> space.addUser(user1));
+        IllegalStateException duplicateUserException = assertThrows(IllegalStateException.class, () -> space.addUser(user1));
+        assertEquals("User already exists in the space", duplicateUserException.getMessage());
     }
 
     /**
@@ -129,11 +140,13 @@ public class SpaceTest {
         assertEquals(1, space.getUsers().size());
 
         // Test removing null user
-        assertThrows(IllegalArgumentException.class, () -> space.removeUser(null));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> space.removeUser(null));
+        assertEquals("User cannot be null", exception.getMessage());
 
         // Test removing non-existent user
         User user3 = new User("User3", "user3@example.com", "password123",0);
-        assertThrows(IllegalStateException.class, () -> space.removeUser(user3));
+        IllegalStateException nonExistentUserException = assertThrows(IllegalStateException.class, () -> space.removeUser(user3));
+        assertEquals("User does not exist in the space", nonExistentUserException.getMessage());
     }
 
     /**

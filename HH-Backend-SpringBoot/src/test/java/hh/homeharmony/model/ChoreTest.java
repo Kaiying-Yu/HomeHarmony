@@ -1,7 +1,12 @@
 package hh.homeharmony.model;
 
-import static org.junit.jupiter.api.Assertions.*;
 import java.time.Duration;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -88,21 +93,26 @@ public class ChoreTest {
      */
     @Test
     public void testAssignUser() {
-        // Test assigning user to PENDING chore
+        // Arrange
+        chore1.setStatus(ChoreStatus.PENDING);
+
+        // Test assigning a valid user to a PENDING chore
         chore1.assignUser(testUser);
         assertEquals(testUser, chore1.getAssignedUser());
         assertEquals(ChoreStatus.IN_PROGRESS, chore1.getChoreStatus());
 
-        // Test assigning null user
-        assertThrows(IllegalArgumentException.class, () -> {
+        // Test assigning a null user
+        IllegalArgumentException exception1 = assertThrows(IllegalArgumentException.class, () -> {
             chore2.assignUser(null);
         });
+        assertEquals("User cannot be null", exception1.getMessage());
 
-        // Test assigning user to completed chore
+        // Test assigning a user to a COMPLETED chore
         chore2.setStatus(ChoreStatus.COMPLETED);
-        assertThrows(IllegalStateException.class, () -> {
+        IllegalStateException exception2 = assertThrows(IllegalStateException.class, () -> {
             chore2.assignUser(testUser);
         });
+        assertEquals("Cannot assign user to completed chore", exception2.getMessage());
     }
 
     /**

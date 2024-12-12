@@ -113,9 +113,10 @@ public class SpaceServiceImplTest {
         spaceWithoutCreator.setUsers(new ArrayList<>());
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> 
-            spaceService.createSpace(spaceWithoutCreator)
-        );
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            spaceService.createSpace(spaceWithoutCreator);
+        });
+        assertNotNull(exception);
     }
 
     /**
@@ -146,9 +147,10 @@ public class SpaceServiceImplTest {
         when(spaceMapper.findSpaceById(999)).thenReturn(null);
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () ->
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
             spaceService.addUserToSpace(999, 1)
         );
+        assertNotNull(exception);
     }
 
     /**
@@ -181,9 +183,10 @@ public class SpaceServiceImplTest {
         when(userMapper.findUserById(1)).thenReturn(testUser);
 
         // Act & Assert
-        assertThrows(IllegalStateException.class, () ->
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () ->
             spaceService.removeUserFromSpace(1, 1)
         );
+        assertNotNull(exception);
     }
 
     /**

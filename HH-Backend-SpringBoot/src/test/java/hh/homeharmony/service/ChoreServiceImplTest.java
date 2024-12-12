@@ -1,15 +1,18 @@
 package hh.homeharmony.service;
 
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
-
-import hh.homeharmony.service.impl.ChoreServiceImpl;
 import java.util.Arrays;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.any;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 
 import hh.homeharmony.mapper.ChoreMapper;
@@ -17,6 +20,7 @@ import hh.homeharmony.mapper.UserMapper;
 import hh.homeharmony.model.Chore;
 import hh.homeharmony.model.ChoreStatus;
 import hh.homeharmony.model.User;
+import hh.homeharmony.service.impl.ChoreServiceImpl;
 
 /**
  * Unit tests for the ChoreServiceImpl class.
@@ -85,9 +89,10 @@ public class ChoreServiceImplTest {
         Chore choreWithoutSpaceId = new Chore();
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             choreService.createChore(choreWithoutSpaceId);
         });
+        assertNotNull(exception);
     }
 
     /**

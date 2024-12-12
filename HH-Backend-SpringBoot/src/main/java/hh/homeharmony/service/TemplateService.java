@@ -5,7 +5,7 @@ import hh.homeharmony.model.FunctionalSpaceType;
 /**
  * Interface for services that handle the creation of default chores.
  */
-public interface CreateChoreService {
+public interface TemplateService {
 
   /**
    * Creates default chores for a specific space based on its functional type.

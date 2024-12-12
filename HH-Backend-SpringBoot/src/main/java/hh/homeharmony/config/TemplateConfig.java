@@ -1,10 +1,18 @@
 package hh.homeharmony.config;
 
-import hh.homeharmony.mapper.ChoreMapper;
-import hh.homeharmony.service.templates.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+
+import hh.homeharmony.mapper.ChoreMapper;
+import hh.homeharmony.service.templates.BalconyChoreTemplate;
+import hh.homeharmony.service.templates.BathroomChoreTemplate;
+import hh.homeharmony.service.templates.BedroomChoreTemplate;
+import hh.homeharmony.service.templates.DiningRoomChoreTemplate;
+import hh.homeharmony.service.templates.GarageChoreTemplate;
+import hh.homeharmony.service.templates.HomeOfficeChoreTemplate;
+import hh.homeharmony.service.templates.KitchenChoreTemplate;
+import hh.homeharmony.service.templates.LivingRoomChoreTemplate;
 
 /**
  * Configuration class for registering DefaultChoreTemplate beans.

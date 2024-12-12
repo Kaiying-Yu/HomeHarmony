@@ -64,9 +64,10 @@ public class UserServiceImplTest {
      */
     @Test
     public void createUser_NullUser_ShouldThrowException() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             userService.createUser(null);
         });
+        assertEquals("User cannot be null", exception.getMessage());
     }
 
     /**
@@ -76,9 +77,10 @@ public class UserServiceImplTest {
     @Test
     public void createUser_EmptyUsername_ShouldThrowException() {
         testUser.setUsername("");
-        assertThrows(IllegalArgumentException.class, () -> {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             userService.createUser(testUser);
         });
+        assertEquals("Username is required", exception.getMessage());
     }
 
     /**
@@ -101,9 +103,10 @@ public class UserServiceImplTest {
      */
     @Test
     public void getUserById_InvalidId_ShouldThrowException() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             userService.getUserById(null);
         });
+        assertEquals("User ID cannot be null", exception.getMessage());
     }
 
     /**
@@ -114,9 +117,10 @@ public class UserServiceImplTest {
     public void getUserById_NonExistentId_ShouldThrowException() {
         when(userMapper.findUserById(999)).thenReturn(null);
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             userService.getUserById(999);
         });
+        assertEquals("User not found with ID: 999", exception.getMessage());
     }
 
     /**
@@ -140,9 +144,10 @@ public class UserServiceImplTest {
     public void updateUser_NonExistentUser_ShouldThrowException() {
         when(userMapper.findUserById(1)).thenReturn(null);
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             userService.updateUser(testUser);
         });
+        assertEquals("User not found with ID: 1", exception.getMessage());
     }
 
     /**
@@ -164,7 +169,7 @@ public class UserServiceImplTest {
      */
     @Test
     public void deleteUser_NullId_ShouldThrowException() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             userService.deleteUser(null);
         });
     }
@@ -177,9 +182,10 @@ public class UserServiceImplTest {
     public void deleteUser_NonExistentId_ShouldThrowException() {
         when(userMapper.findUserById(999)).thenReturn(null);
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             userService.deleteUser(999);
         });
+        assertEquals("User not found with ID: 999", exception.getMessage());
     }
 
     /**
@@ -204,9 +210,10 @@ public class UserServiceImplTest {
     public void login_InvalidCredentials_ShouldThrowException() {
         when(userMapper.getByUsernameAndPassword(testUser)).thenReturn(null);
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             userService.login(testUser);
         });
+        assertEquals("Invalid username or password", exception.getMessage());
     }
 
     /**
@@ -231,9 +238,10 @@ public class UserServiceImplTest {
     public void addPoints_NonExistentUser_ShouldThrowException() {
         when(userMapper.findUserById(999)).thenReturn(null);
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             userService.addPoints(999, 10);
         });
+        assertEquals("User not found with ID: 999", exception.getMessage());
     }
 
     /**
@@ -242,8 +250,7 @@ public class UserServiceImplTest {
      */
     @Test
     public void addPoints_NegativePoints_ShouldThrowException() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            userService.addPoints(1, -5);
-        });
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> userService.addPoints(1, -5));
+        assertEquals("Points must be a positive number", exception.getMessage());
     }
 }

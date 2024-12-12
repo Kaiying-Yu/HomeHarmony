@@ -1,11 +1,12 @@
 package hh.homeharmony.service.templates;
 
+import java.time.Duration;
+import java.util.List;
+
 import hh.homeharmony.mapper.ChoreMapper;
 import hh.homeharmony.model.Chore;
 import hh.homeharmony.model.ChoreStatus;
 import hh.homeharmony.model.FunctionalSpaceType;
-import java.time.Duration;
-import java.util.List;
 
 public abstract class DefaultChoreTemplate {
 
