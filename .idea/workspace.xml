@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="0d681250-185c-4520-ace7-126ab4869eb4" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CoverageOptionsProvider">
+    <option name="myAddOrReplace" value="1" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Kaiying-Yu"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Kaiying-Yu/HomeHarmony.git",
+    "accountId": "fc417c12-d255-4e39-802f-37862a089233"
+  }
+}]]></component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="customMavenHome" value="C:\Users\Kaiying\Desktop\apache-maven-3.6.1" />
+        <option name="mavenHomeTypeForPersistence" value="CUSTOM" />
+        <option name="userSettingsFile" value="C:\Users\Kaiying\Desktop\apache-maven-3.6.1\conf\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="MavenRunner">
+    <option name="jreName" value="21" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 3
+}]]></component>
+  <component name="ProjectId" id="2pwyT6niJWW3NAOLNjndoUT68cX" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "JUnit.AuthControllerTest.executor": "Coverage",
+    "JUnit.ChoreControllerTest.executor": "Coverage",
+    "JUnit.ChoreServiceImplTest.executor": "Coverage",
+    "JUnit.ChoreTest.executor": "Run",
+    "JUnit.ChoreTest.testToString.executor": "Run",
+    "JUnit.SpaceControllerTest.executor": "Run",
+    "JUnit.SpaceServiceImplTest.executor": "Coverage",
+    "JUnit.SpaceTest.executor": "Coverage",
+    "JUnit.UserControllerTest.executor": "Run",
+    "JUnit.UserControllerTest.updateUser_NonExistentId_ShouldReturnNotFound.executor": "Run",
+    "JUnit.UserServiceImplTest.executor": "Run",
+    "JUnit.UserTest.executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "Spring Boot.HomeharmonyApplication.executor": "Run",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Kaiying/Desktop/HomeHarmony-ky/HomeHarmony-ky/HH-Backend-SpringBoot/src/test/java/hh/homeharmony",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "reference.projectsettings.compiler.javacompiler",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
+    ]
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Kaiying\Desktop\HomeHarmony-ky\HomeHarmony-ky\HH-Backend-SpringBoot\src\test\java\hh\homeharmony" />
+      <recent name="C:\Users\Kaiying\Desktop\HomeHarmony-ky\HomeHarmony-ky\HH-Backend-SpringBoot\src\main\java\hh\homeharmony\service" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="hh.homeharmony.service.impl" />
+      <recent name="hh.homeharmony.service" />
+      <recent name="hh.homeharmony.model" />
+      <recent name="hh.homeharmony.dto" />
+      <recent name="hh.homeharmony.config" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="AuthControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="homeharmony" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="hh.homeharmony.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="hh.homeharmony.controller" />
+      <option name="MAIN_CLASS_NAME" value="hh.homeharmony.controller.AuthControllerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ChoreControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="homeharmony" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="hh.homeharmony.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="hh.homeharmony.controller" />
+      <option name="MAIN_CLASS_NAME" value="hh.homeharmony.controller.ChoreControllerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SpaceControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="homeharmony" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="hh.homeharmony.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="hh.homeharmony.controller" />
+      <option name="MAIN_CLASS_NAME" value="hh.homeharmony.controller.SpaceControllerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="homeharmony" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="hh.homeharmony.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="hh.homeharmony.controller" />
+      <option name="MAIN_CLASS_NAME" value="hh.homeharmony.controller.UserControllerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserControllerTest.updateUser_NonExistentId_ShouldReturnNotFound" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="homeharmony" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="hh.homeharmony.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="hh.homeharmony.controller" />
+      <option name="MAIN_CLASS_NAME" value="hh.homeharmony.controller.UserControllerTest" />
+      <option name="METHOD_NAME" value="updateUser_NonExistentId_ShouldReturnNotFound" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HomeharmonyApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="homeharmony" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="hh.homeharmony.HomeharmonyApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.UserControllerTest.updateUser_NonExistentId_ShouldReturnNotFound" />
+        <item itemvalue="JUnit.UserControllerTest" />
+        <item itemvalue="JUnit.SpaceControllerTest" />
+        <item itemvalue="JUnit.ChoreControllerTest" />
+        <item itemvalue="JUnit.AuthControllerTest" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23726.103" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23726.103" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0d681250-185c-4520-ace7-126ab4869eb4" name="Changes" comment="" />
+      <created>1733691436778</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1733691436778</updated>
+      <workItem from="1733691438296" duration="96149000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/HomeHarmony_ky$UserTest.ic" NAME="UserTest Coverage Results" MODIFIED="1733897682439" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>hh.homeharmony.model.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/HomeHarmony_ky$SpaceServiceImplTest.ic" NAME="SpaceServiceImplTest Coverage Results" MODIFIED="1733946434964" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>hh.homeharmony.service.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/HomeHarmony_ky$ChoreTest.ic" NAME="ChoreTest Coverage Results" MODIFIED="1733886151855" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>hh.homeharmony.model.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/HomeHarmony_ky$SpaceTest.ic" NAME="SpaceTest Coverage Results" MODIFIED="1733896200215" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>hh.homeharmony.model.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/HomeHarmony_ky$UserServiceImplTest.ic" NAME="UserServiceImplTest Coverage Results" MODIFIED="1733948030257" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>hh.homeharmony.service.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/HomeHarmony_ky$UserControllerTest.ic" NAME="UserControllerTest Coverage Results" MODIFIED="1733950142544" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>hh.homeharmony.controller.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/HomeHarmony_ky$ChoreControllerTest.ic" NAME="ChoreControllerTest Coverage Results" MODIFIED="1733949320291" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>hh.homeharmony.controller.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/HomeHarmony_ky$ChoreServiceImplTest.ic" NAME="ChoreServiceImplTest Coverage Results" MODIFIED="1733946402622" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>hh.homeharmony.service.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/HomeHarmony_ky$SpaceControllerTest.ic" NAME="SpaceControllerTest Coverage Results" MODIFIED="1733950013763" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>hh.homeharmony.controller.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/HomeHarmony_ky$AuthControllerTest.ic" NAME="AuthControllerTest Coverage Results" MODIFIED="1733949157053" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>hh.homeharmony.controller.*</FILTER>
+    </SUITE>
+  </component>
+</project>
