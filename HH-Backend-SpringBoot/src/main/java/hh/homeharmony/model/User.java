@@ -1,7 +1,5 @@
 package hh.homeharmony.model;
 
-import java.io.Serializable;
-
 /**
  * Represents a User in the system.
  * Users can be assigned chores and can belong to multiple spaces.
