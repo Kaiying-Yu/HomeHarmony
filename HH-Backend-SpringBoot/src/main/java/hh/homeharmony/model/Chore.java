@@ -56,6 +56,7 @@ public class Chore extends BaseEntity implements IChore {
      *
      * @return the chore name
      */
+    @Override
     public String getChoreName() {
         return choreName;
     }
@@ -65,6 +66,7 @@ public class Chore extends BaseEntity implements IChore {
      *
      * @param choreName the name to set
      */
+    @Override
     public void setChoreName(String choreName) {
         this.choreName = choreName;
     }
@@ -74,6 +76,7 @@ public class Chore extends BaseEntity implements IChore {
      *
      * @return the chore description
      */
+    @Override
     public String getChoreDescription() {
         return description;
     }
@@ -83,6 +86,7 @@ public class Chore extends BaseEntity implements IChore {
      *
      * @param description the description to set
      */
+    @Override
     public void setChoreDescription(String description) {
         this.description = description;
     }
@@ -92,6 +96,7 @@ public class Chore extends BaseEntity implements IChore {
      *
      * @return the functional space type
      */
+    @Override
     public FunctionalSpaceType getFunctionalSpaceType() {
         return functionalSpaceType;
     }
@@ -101,6 +106,7 @@ public class Chore extends BaseEntity implements IChore {
      *
      * @param functionalSpaceType the space type to set
      */
+    @Override
     public void setFunctionalSpaceType(FunctionalSpaceType functionalSpaceType) {
         this.functionalSpaceType = functionalSpaceType;
     }
@@ -110,6 +116,7 @@ public class Chore extends BaseEntity implements IChore {
      *
      * @return the estimated duration
      */
+    @Override
     public Duration getEstimatedTime() {
         return estimatedTime;
     }
@@ -119,6 +126,7 @@ public class Chore extends BaseEntity implements IChore {
      *
      * @param estimatedTime the duration to set
      */
+    @Override
     public void setEstimatedTime(Duration estimatedTime) {
         this.estimatedTime = estimatedTime;
     }
@@ -128,6 +136,7 @@ public class Chore extends BaseEntity implements IChore {
      *
      * @return the points value
      */
+    @Override
     public Integer getPoints() {
         return points;
     }
@@ -137,6 +146,7 @@ public class Chore extends BaseEntity implements IChore {
      *
      * @param points the points to set
      */
+    @Override
     public void setPoints(Integer points) {
         this.points = points;
     }
@@ -147,6 +157,7 @@ public class Chore extends BaseEntity implements IChore {
      *
      * @return the current ChoreStatus
      */
+
     @Override
     public ChoreStatus getChoreStatus() {
         return this.status;
@@ -157,6 +168,7 @@ public class Chore extends BaseEntity implements IChore {
      *
      * @param status the status to set
      */
+    @Override
     public void setStatus(ChoreStatus status) {
         this.status = status;
     }
@@ -166,10 +178,17 @@ public class Chore extends BaseEntity implements IChore {
      *
      * @return the space ID
      */
+    @Override
     public Integer getSpaceId() {
         return spaceId;
     }
-
+    
+    /**
+     * Sets the ID of the space this chore belongs to for the chore.
+     * 
+     * @param spaceId the space ID to set
+     */
+    @Override
     public void setSpaceId(Integer spaceId) {
         this.spaceId = spaceId;
     }
@@ -179,6 +198,7 @@ public class Chore extends BaseEntity implements IChore {
      *
      * @return the assigned user, or null if unassigned
      */
+    @Override
     public User getAssignedUser() {
         return assignedUser;
     }
