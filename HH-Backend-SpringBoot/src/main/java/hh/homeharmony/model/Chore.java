@@ -8,6 +8,7 @@ import java.time.Duration;
  * such as name, description, estimated time, and points.
  * Implements IChore interface for core chore functionality.
  */
+/* OOD Idea: Single Responsibility-This class only handles chore related attributes and behaviors*/
 public class Chore extends BaseEntity implements IChore {
     private String choreName;                    // Name of the chore task
     private String description;                  // Detailed description of what needs to be done

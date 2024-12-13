@@ -15,11 +15,12 @@ import lombok.extern.slf4j.Slf4j;
  * Controller responsible for handling authentication-related endpoints.
  * This includes user login and logout operations.
  */
+/* OOD Idea: Single Responsibility-This class only handles login and logout request*/
 @Slf4j  // Enables logging using Lombok
 @RestController // Combines @Controller and @ResponseBody
 @RequestMapping("/auth")  // Base path for all auth endpoints
 public class AuthController {
-
+    /* OOD Idea: Fields must always be private */
     // @Autowired a Spring annotation for dependency injection.
     // Inject the UserService for handling user-related operations
     @Autowired

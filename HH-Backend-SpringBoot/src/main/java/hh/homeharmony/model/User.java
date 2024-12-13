@@ -4,7 +4,9 @@ package hh.homeharmony.model;
  * Represents a User in the system.
  * Users can be assigned chores and can belong to multiple spaces.
  */
+/* OOD Idea: Single Responsibility-This class only handles user related attributes and behaviors*/
 public class User extends BaseEntity implements IUser {
+  /* OOD Idea: Fields must always be private */
   private String username;
   private String email;
   private String password;
@@ -139,7 +141,3 @@ public class User extends BaseEntity implements IUser {
         '}';
   }
 }
-
-
-
-

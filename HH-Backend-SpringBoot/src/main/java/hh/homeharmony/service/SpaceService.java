@@ -7,6 +7,9 @@ import hh.homeharmony.model.Space;
  * Defines all business operations that can be performed on Spaces within the system.
  * Handles space creation, user management, and space retrieval operations.
  */
+/* OOD Idea: Dependency Inversion-Details depend on abstractions */
+/* OOD Idea: Abstraction-This interface defines the contract for any class that implements it,
+without specifying how the operations are performed.*/
 public interface SpaceService {
     
     /**

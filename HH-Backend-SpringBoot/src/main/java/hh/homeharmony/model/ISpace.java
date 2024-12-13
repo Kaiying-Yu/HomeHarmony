@@ -7,6 +7,10 @@ import java.util.List;
  * A space represents a shared living environment where users can collaborate on chores.
  * This interface provides basic methods for managing user membership within a space.
  */
+/* OOD Idea: Dependency Inversion-Details depend on abstractions */
+/* OOD Idea: Open for extension, closed for modification */
+/* OOD Idea: Abstraction-This interface defines the contract for any class that implements it,
+without specifying how the operations are performed.*/
 public interface ISpace {
     /**
      * Gets the name of the space.
@@ -36,6 +40,7 @@ public interface ISpace {
      * @throws IllegalArgumentException if the user is null
      * @throws IllegalStateException if the user is already in the space
      */
+    /* OOD Idea: check inputs */
     void addUser(User user) throws IllegalArgumentException, IllegalStateException;
 
     /**
@@ -45,5 +50,6 @@ public interface ISpace {
      * @throws IllegalArgumentException if the user is null
      * @throws IllegalStateException if the user is not in the space
      */
+    /* OOD Idea: check inputs */
     void removeUser(User user) throws IllegalArgumentException, IllegalStateException;
 } 

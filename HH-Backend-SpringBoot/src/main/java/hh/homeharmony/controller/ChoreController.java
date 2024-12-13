@@ -25,6 +25,7 @@ import hh.homeharmony.service.UserService;
  * Provides endpoints for CRUD operations on chores and chore assignments.
  * All endpoints are mapped under the "/chores" base path.
  */
+/* OOD Idea: Single Responsibility-This class only handles chore related request*/
 @RestController
 @RequestMapping("/chores")
 public class ChoreController {

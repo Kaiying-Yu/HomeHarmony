@@ -6,6 +6,10 @@ import java.time.Duration;
  * Interface defining core chore functionality.
  * Provides basic methods for managing chore status and assignment.
  */
+/* OOD Idea: Dependency Inversion-Details depend on abstractions */
+/* OOD Idea: Open for extension, closed for modification */
+/* OOD Idea: Abstraction-This interface defines the contract for any class that implements it,
+without specifying how the operations are performed.*/
 public interface IChore {
 
     /**

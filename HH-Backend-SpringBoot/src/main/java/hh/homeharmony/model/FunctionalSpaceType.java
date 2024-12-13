@@ -5,6 +5,7 @@ package hh.homeharmony.model;
  * Used to categorize different areas within a space for chore assignment and organization.
  * Referenced by Chore entity and ChoreTemplates for functional-space-specific task management.
  */
+/* OOD Idea: Reusability-The enum can be reused throughout the codebase wherever these functional space types are needed,*/
 public enum FunctionalSpaceType {
   KITCHEN,
   BATHROOM,

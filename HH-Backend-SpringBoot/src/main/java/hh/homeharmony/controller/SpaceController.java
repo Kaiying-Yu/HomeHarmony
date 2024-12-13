@@ -22,10 +22,11 @@ import hh.homeharmony.service.SpaceService;
  * Provides endpoints for creating, reading, updating, and managing spaces and their members.
  * All endpoints are mapped under the "/space" base path.
  */
+/* OOD Idea: Single Responsibility-This class only handles space related request*/
 @RestController
 @RequestMapping("/space")
 public class SpaceController {
-
+  /* OOD Idea: Fields must always be private */
   // @Autowired a Spring annotation for dependency injection.
   // Inject the SpaceService for handling space-related operations
   @Autowired

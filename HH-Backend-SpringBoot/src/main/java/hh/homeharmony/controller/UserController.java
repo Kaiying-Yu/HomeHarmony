@@ -23,10 +23,11 @@ import hh.homeharmony.service.UserService;
  * Provides endpoints for creating, reading, updating, and managing users.
  * All endpoints are mapped under the "/user" base path.
  */
+/* OOD Idea: Single Responsibility-This class only handles user related request*/
 @RestController
 @RequestMapping("/user")
 public class UserController {
-
+    /* OOD Idea: Fields must always be private */
     // Inject UserService for handling business logic
     @Autowired
     private UserService userService;

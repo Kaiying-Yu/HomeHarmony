@@ -5,6 +5,7 @@ package hh.homeharmony.model;
  * Used to track the lifecycle of chores from creation to completion.
  * Referenced by Chore entity and ChoreService for status management.
  */
+/* OOD Idea: Reusability-The enum can be reused throughout the codebase wherever these chore status are needed,*/
 public enum ChoreStatus {
   // Initial state when chore is created but not yet started
   PENDING("Pending"),

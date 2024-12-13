@@ -1,18 +1,35 @@
 package hh.homeharmony.service.templates;
 
-import hh.homeharmony.mapper.ChoreMapper;
-import hh.homeharmony.model.Chore;
-import hh.homeharmony.model.FunctionalSpaceType;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
+import hh.homeharmony.mapper.ChoreMapper;
+import hh.homeharmony.model.Chore;
+import hh.homeharmony.model.FunctionalSpaceType;
+
+/**
+ * A template for generating default chores specific to a living room space.
+ * This class extends DefaultChoreTemplate and provides
+ * predefined chores tailored for living rooms.
+ */
 public class LivingRoomChoreTemplate extends DefaultChoreTemplate {
 
+  /**
+   * Constructs a new LivingRoomChoreTemplate.
+   *
+   * @param choreMapper the ChoreMapper used for mapping chore data
+   */
   public LivingRoomChoreTemplate(ChoreMapper choreMapper) {
     super(choreMapper);
   }
 
+  /**
+   * Returns a list of default chores for a living room.
+   *
+   * @param spaceId the ID of the functional space (living room) for which chores are created
+   * @return a list of default Chore objects for the living room
+   */
   @Override
   public List<Chore> getDefaultChores(Integer spaceId) {
     List<Chore> chores = new ArrayList<>();
@@ -48,6 +65,11 @@ public class LivingRoomChoreTemplate extends DefaultChoreTemplate {
     return chores;
   }
 
+  /**
+   * Returns the functional space type associated with this template.
+   *
+   * @return the FunctionalSpaceType for this template, which is LIVING_ROOM
+   */
   @Override
   public FunctionalSpaceType getFunctionalSpaceType() {
     return FunctionalSpaceType.LIVING_ROOM;

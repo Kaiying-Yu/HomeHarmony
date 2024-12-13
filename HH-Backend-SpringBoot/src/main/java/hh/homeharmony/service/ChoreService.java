@@ -9,6 +9,9 @@ import hh.homeharmony.model.Chore;
  * Defines all business operations that can be performed on Chores within a space.
  * Handles chore creation, assignment, completion, and retrieval operations.
  */
+/* OOD Idea: Dependency Inversion-Details depend on abstractions */
+/* OOD Idea: Abstraction-This interface defines the contract for any class that implements it,
+without specifying how the operations are performed.*/
 public interface ChoreService {
     /**
      * Retrieves all chores for a specific space.
@@ -25,6 +28,7 @@ public interface ChoreService {
      * @return the created chore with generated ID
      * @throws IllegalArgumentException if chore is null or has invalid fields
      */
+    /* OOD Idea: check inputs */
     Chore createChore(Chore chore) throws IllegalArgumentException;
 
     /**
@@ -50,6 +54,7 @@ public interface ChoreService {
      * @param userId the ID of the user to assign to the chore
      * @throws IllegalArgumentException if either ID is invalid or entities not found
      */
+    /* OOD Idea: check inputs */
     void assignUserToChore(Integer choreId, Integer userId) throws IllegalArgumentException;
 
     /**
@@ -60,6 +65,7 @@ public interface ChoreService {
      * @return the completed chore
      * @throws IllegalArgumentException if chore not found
      */
+    /* OOD Idea: check inputs */
     Chore completeChore(Integer choreId) throws IllegalArgumentException;
 
     /**

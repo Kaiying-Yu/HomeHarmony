@@ -5,8 +5,10 @@ package hh.homeharmony.model;
  * This class provides a common structure for ID management across all entities.
  * All domain entities in the system should extend this class to inherit ID functionality.
  */
+/* OOD Idea: Single Responsibility-This class only handles id related behaviors*/
 public abstract class BaseEntity {
     /** Universal identifier for all entities */
+    /* OOD Idea: Fields must always be private */
     protected Integer id;
 
     /**

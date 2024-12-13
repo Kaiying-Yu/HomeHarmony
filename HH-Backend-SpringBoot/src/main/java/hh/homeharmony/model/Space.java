@@ -8,9 +8,12 @@ import java.util.List;
  * Spaces are areas that can have various functional spaces and chores assigned to them,
  * and can be occupied by multiple members.
  */
+/* OOD Idea: Single Responsibility-This class only handles space related attributes and behaviors*/
 public class Space extends BaseEntity implements ISpace {
+    /* OOD Idea: Fields must always be private */
     private String name;
     private List<User> users; // List of Users associated with the Space
+                              /* OOD Idea: Composition-Space has a list of User(object) */
 
     /**
      * Default constructor.

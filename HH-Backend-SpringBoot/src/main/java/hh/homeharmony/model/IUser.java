@@ -5,6 +5,10 @@ package hh.homeharmony.model;
  * A user represents an individual account in the system that can join spaces and perform chores.
  * This interface provides basic methods for managing user attributes and state.
  */
+/* OOD Idea: Dependency Inversion-Details depend on abstractions */
+/* OOD Idea: Open for extension, closed for modification */
+/* OOD Idea: Abstraction-This interface defines the contract for any class that implements it,
+without specifying how the operations are performed.*/
 public interface IUser {
     /**
      * Gets the username of the user.

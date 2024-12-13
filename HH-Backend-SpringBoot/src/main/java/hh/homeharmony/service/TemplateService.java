@@ -5,6 +5,9 @@ import hh.homeharmony.model.FunctionalSpaceType;
 /**
  * Interface for services that handle the creation of default chores.
  */
+/* OOD Idea: Dependency Inversion-Details depend on abstractions */
+/* OOD Idea: Abstraction-This interface defines the contract for any class that implements it,
+without specifying how the operations are performed.*/
 public interface TemplateService {
 
   /**
