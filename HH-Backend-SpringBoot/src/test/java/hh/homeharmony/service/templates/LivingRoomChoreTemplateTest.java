@@ -24,6 +24,10 @@ public class LivingRoomChoreTemplateTest {
 
     private ChoreMapper choreMapper;
 
+    /**
+     * Sets up the test environment before each test.
+     * Initializes the mocked ChoreMapper and the LivingRoomChoreTemplate instance under test.
+     */
     @BeforeEach
     public void setUp() {
         // Use a mock ChoreMapper

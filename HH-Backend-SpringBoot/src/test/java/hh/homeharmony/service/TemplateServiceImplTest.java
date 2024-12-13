@@ -19,6 +19,10 @@ import hh.homeharmony.model.FunctionalSpaceType;
 import hh.homeharmony.service.impl.TemplateServiceImpl;
 import hh.homeharmony.service.templates.DefaultChoreTemplate;
 
+/**
+ * Test class for TemplateServiceImpl.
+ * Verifies functionality for managing default chore creation based on functional space types.
+ */
 class TemplateServiceImplTest {
 
     @Mock
@@ -32,6 +36,10 @@ class TemplateServiceImplTest {
     private final FunctionalSpaceType kitchenType = FunctionalSpaceType.KITCHEN;
     private final FunctionalSpaceType livingRoomType = FunctionalSpaceType.LIVING_ROOM;
 
+    /**
+     * Sets up the test environment before each test.
+     * Initializes the mocked templates and the TemplateServiceImpl instance under test.
+     */
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -44,6 +52,9 @@ class TemplateServiceImplTest {
         templateServiceImpl = new TemplateServiceImpl(List.of(kitchenTemplate, livingRoomTemplate));
     }
 
+    /**
+     * Tests that the correct template's createDefaultChores method is called for a valid space type.
+     */
     @Test
     void testCreateDefaultChores_withValidType_callsCorrectTemplate() {
         Integer spaceId = 1;
@@ -56,6 +67,9 @@ class TemplateServiceImplTest {
         verify(livingRoomTemplate, never()).createDefaultChores(anyInt());
     }
 
+    /**
+     * Tests that an exception is thrown when no template exists for a given space type.
+     */
     @Test
     void testCreateDefaultChores_withInvalidType_throwsException() {
         Integer spaceId = 1;
@@ -69,6 +83,9 @@ class TemplateServiceImplTest {
         assertEquals("No template found for FunctionalSpaceType: " + invalidType, exception.getMessage());
     }
 
+    /**
+     * Tests that the template map is initialized correctly and mappings are honored.
+     */
     @Test
     void testCreateDefaultChores_templateMapInitialization() {
         // Verify that the template map contains the correct mappings
@@ -79,6 +96,9 @@ class TemplateServiceImplTest {
         verify(livingRoomTemplate, times(1)).createDefaultChores(2);
     }
 
+    /**
+     * Tests that the correct template's createDefaultChores method is called for a valid space type.
+     */
     @Test
     void testDefaultChoreTemplate_createDefaultChores() {
         Integer spaceId = 1;
