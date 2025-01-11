@@ -11,7 +11,7 @@ HomeHarmony is a web application that helps households manage and track chores a
 - Real-time updates of chore status
 
 ## Demo
-<iframe width="560" height="315" src="https://www.youtube.com/embed/4XC9cezI4PI?si=4aFz9ANEKH2oY8eb" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+[![Watch the demo on YouTube](https://img.youtube.com/vi/4XC9cezI4PI/0.jpg)](https://www.youtube.com/watch?v=4XC9cezI4PI)
 
 ## Tech Stack
 
