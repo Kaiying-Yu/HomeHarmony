@@ -10,6 +10,9 @@ HomeHarmony is a web application that helps households manage and track chores a
 - Points system for completed chores
 - Real-time updates of chore status
 
+## Demo
+[![Watch the demo on YouTube](https://img.youtube.com/vi/4XC9cezI4PI/0.jpg)](https://www.youtube.com/watch?v=4XC9cezI4PI)
+
 ## Tech Stack
 
 - Frontend: Vue.js 2.x with Element UI
